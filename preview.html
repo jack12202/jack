@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT代充平台 - 预览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .preview-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            text-align: center;
+        }
+        
+        .preview-header {
+            margin-bottom: 30px;
+        }
+        
+        .preview-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #6366f1;
+            margin-bottom: 10px;
+        }
+        
+        .preview-subtitle {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+        
+        .preview-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .feature-item {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #6366f1;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+        
+        .feature-desc {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .preview-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+        
+        .btn-secondary {
+            background: #f9fafb;
+            color: #1f2937;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .btn-secondary:hover {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+        
+        .preview-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 12px;
+        }
+        
+        .preview-info h3 {
+            color: #6366f1;
+            margin-bottom: 10px;
+        }
+        
+        .preview-info p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .update-highlights {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ecfdf5;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+        }
+        
+        .update-highlights h4 {
+            color: #10b981;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .update-highlights ul {
+            text-align: left;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .update-highlights li {
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 600px) {
+            .preview-container {
+                padding: 20px;
+            }
+            
+            .preview-title {
+                font-size: 2rem;
+            }
+            
+            .preview-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <div class="preview-header">
+            <h1 class="preview-title">🤖 GPT代充平台</h1>
+            <p class="preview-subtitle">官方价格，优惠充值 - 安全可靠的GPT Plus会员充值服务</p>
+        </div>
+        
+        <div class="preview-features">
+            <div class="feature-item">
+                <div class="feature-title">💰 价格优惠</div>
+                <div class="feature-desc">比官方价格更优惠，月付仅需¥128</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-title">💳 微信支付</div>
+                <div class="feature-desc">支持微信支付，操作简单便捷，无需国外信用卡</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-title">⚡ 极速充值</div>
+                <div class="feature-desc">支付成功后5分钟内自动充值到账</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-title">🛡️ 安全可靠</div>
+                <div class="feature-desc">银行级安全加密，保护您的支付信息</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-title">🎯 一键充值</div>
+                <div class="feature-desc">简单操作，跳转发卡平台完成支付</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-title">📹 操作演示</div>
+                <div class="feature-desc">提供详细的操作演示视频</div>
+            </div>
+        </div>
+        
+        <div class="preview-buttons">
+            <a href="index.html" class="btn btn-primary">🚀 查看完整网站</a>
+            <button class="btn btn-secondary" onclick="showDemo()">🎬 功能演示</button>
+        </div>
+        
+        <div class="preview-info">
+            <h3>📋 网站功能预览</h3>
+            <p>• 响应式设计，支持手机、平板、电脑访问<br>
+            • 价格对比展示，突出优惠优势<br>
+            • 多种套餐选择（月付、季付、年付）<br>
+            • 操作演示视频，详细指导用户<br>
+            • 常见问题解答，自助服务<br>
+            • 微信客服支持<br>
+            • 平滑滚动和动画效果<br>
+            • 移动端友好的导航菜单</p>
+        </div>
+        
+        <div class="update-highlights">
+            <h4>🆕 最新更新</h4>
+            <ul>
+                <li>✅ 接入真实发卡平台链接</li>
+                <li>✅ 添加操作演示视频</li>
+                <li>✅ 简化为只支持微信支付</li>
+                <li>✅ 优化页面布局和交互</li>
+                <li>✅ 移除24小时客服，简化客服流程</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showDemo() {
+            alert('🎉 网站功能演示：\n\n1. 点击"查看完整网站"进入主页面\n2. 体验响应式导航栏\n3. 查看价格对比和套餐选择\n4. 观看操作演示视频\n5. 点击FAQ查看交互效果\n6. 测试移动端菜单\n7. 体验平滑滚动和返回顶部功能\n8. 点击"微信支付"跳转到发卡平台\n\n所有功能都已实现，可以直接使用！');
+        }
+        
+        // 添加一些交互效果
+        document.querySelectorAll('.feature-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.boxShadow = '0 10px 15px -3px rgb(0 0 0 / 0.1)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html> 
