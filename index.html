@@ -1,226 +1,283 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPT代充平台</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background: #edeaff;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .main-box {
-            background: #fff;
-            max-width: 700px;
-            margin: 40px auto 0 auto;
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(80, 80, 160, 0.10);
-            padding: 40px 32px 32px 32px;
-        }
-        .logo-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-        .logo-title i {
-            font-size: 2.2rem;
-            color: #6366f1;
-        }
-        .main-title {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #6366f1;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-        .sub-title {
-            text-align: center;
-            color: #6b7280;
-            font-size: 1.08rem;
-            margin-bottom: 32px;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 22px;
-            margin-bottom: 36px;
-        }
-        .feature-card {
-            background: #f7f7fd;
-            border-radius: 14px;
-            padding: 22px 18px 18px 18px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            box-shadow: 0 2px 8px rgba(80,80,160,0.04);
-            min-height: 90px;
-        }
-        .feature-card .icon {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-        }
-        .feature-title {
-            font-weight: 600;
-            font-size: 1.08rem;
-            margin-bottom: 4px;
-            color: #333;
-        }
-        .feature-desc {
-            color: #6b7280;
-            font-size: 0.98rem;
-        }
-        .price-box {
-            background: #f3f4f6;
-            border-radius: 12px;
-            padding: 22px 0 18px 0;
-            margin: 0 auto 32px auto;
-            max-width: 340px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(80,80,160,0.04);
-        }
-        .price-title {
-            font-size: 1.15rem;
-            color: #6366f1;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        .price-value {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #222;
-            margin-bottom: 6px;
-        }
-        .price-desc {
-            color: #6b7280;
-            font-size: 1rem;
-        }
-        .pay-btn {
-            margin-top: 18px;
-            background: linear-gradient(90deg, #6366f1 0%, #7c3aed 100%);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.08rem;
-            font-weight: 600;
-            padding: 13px 0;
-            width: 90%;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .pay-btn:hover {
-            background: linear-gradient(90deg, #7c3aed 0%, #6366f1 100%);
-        }
-        .bottom-btns {
-            display: flex;
-            gap: 18px;
-            justify-content: center;
-            margin-top: 30px;
-        }
-        .bottom-btns a, .bottom-btns button {
-            padding: 12px 28px;
-            border-radius: 8px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background 0.2s, color 0.2s;
-        }
-        .bottom-btns .main {
-            background: #6366f1;
-            color: #fff;
-        }
-        .bottom-btns .main:hover {
-            background: #7c3aed;
-        }
-        .bottom-btns .secondary {
-            background: #f3f4f6;
-            color: #222;
-            border: 1px solid #e5e7eb;
-        }
-        .bottom-btns .secondary:hover {
-            background: #edeaff;
-        }
-        @media (max-width: 600px) {
-            .main-box {
-                padding: 18px 4vw 18px 4vw;
-            }
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 14px;
-            }
-            .price-box {
-                padding: 18px 0 14px 0;
-            }
-            .bottom-btns {
-                flex-direction: column;
-                gap: 12px;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GPT Plus 会员代充平台</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background-color: #f8f9fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header, section {
+      max-width: 800px;
+      margin: auto;
+      padding: 24px;
+    }
+    footer {
+      max-width: 800px;
+      margin: auto;
+      padding: 24px;
+      background-color: #f4f4f4;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 48px;
+    }
+    h1 {
+      font-size: 2.4rem;
+      line-height: 1.3;
+      letter-spacing: 0.5px;
+      color: #4f46e5;
+      text-align: center;
+      margin-bottom: 1.2em;
+    }
+    h2 {
+      font-size: 1.8rem;
+      color: #333;
+      margin-top: 32px;
+      margin-bottom: 24px;
+    }
+    .advantage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+    .advantage-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    .steps-inline {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 12px 16px;
+      padding-left: 12px;
+      margin-bottom: 24px;
+      text-align: left;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #444;
+      font-weight: 500;
+    }
+    .price-box {
+      background: #fefefe;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 32px;
+    }
+    .price-box strong {
+      font-size: 2rem;
+      color: #4f46e5;
+    }
+    .primary {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.3s ease;
+    }
+    .primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+    }
+    .btn {
+      background-color: #6366f1;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    .btn.primary-btn {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      font-weight: 600;
+    }
+    .btn.primary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+    }
+    .btn.secondary {
+      background-color: #fff;
+      color: #666;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+    .btn.secondary:hover {
+      border-color: #bbb;
+      background-color: #f9f9f9;
+      transform: translateY(-1px);
+    }
+    .btn:hover {
+      text-decoration: none;
+    }
+    .account-banner {
+      background: transparent;
+      padding: 20px 0;
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .account-banner .banner-text {
+      flex: 1;
+      min-width: 200px;
+    }
+    .account-banner h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: #555;
+      font-weight: 500;
+    }
+    .account-banner p {
+      margin: 0;
+      font-size: 12px;
+      color: #777;
+    }
+    .wechat-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .wechat-float img {
+      width: 100%;
+      border-radius: 50%;
+    }
+    footer {
+      font-size: 12px;
+      color: #777;
+      text-align: center;
+    }
+    @media (max-width: 480px) {
+      header, section {
+        padding: 16px;
+      }
+      footer {
+        padding: 16px;
+      }
+      .btn, .primary {
+        font-size: 15px;
+        padding: 10px 16px;
+      }
+      .advantage-card h3 {
+        font-size: 16px;
+      }
+      .advantage-card p {
+        font-size: 14px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .account-banner {
+        flex-direction: column;
+        text-align: center;
+      }
+      .steps-card {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="main-box">
-        <div class="logo-title">
-            <i class="fas fa-robot"></i>
-            <span class="main-title">GPT代充平台</span>
-        </div>
-        <div class="sub-title">官方价格，优惠充值 - 安全可靠的GPT Plus会员充值服务</div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="icon">💰</div>
-                <div class="feature-title">价格优惠</div>
-                <div class="feature-desc">比官方价格更优惠，月付仅需¥140</div>
-            </div>
-            <div class="feature-card">
-                <div class="icon">💳</div>
-                <div class="feature-title">微信支付</div>
-                <div class="feature-desc">支持微信支付，无需国外信用卡</div>
-            </div>
-            <div class="feature-card">
-                <div class="icon">⚡</div>
-                <div class="feature-title">极速充值</div>
-                <div class="feature-desc">支付成功后5分钟内自动充值到账</div>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🛡️</div>
-                <div class="feature-title">安全可靠</div>
-                <div class="feature-desc">银行级安全加密，保护您的支付信息</div>
-            </div>
-            <div class="feature-card">
-                <div class="icon">🎯</div>
-                <div class="feature-title">一键充值</div>
-                <div class="feature-desc">简单操作，跳转发卡平台完成支付</div>
-            </div>
-            <div class="feature-card">
-                <div class="icon">📹</div>
-                <div class="feature-title">操作演示</div>
-                <div class="feature-desc">提供详细的操作演示视频</div>
-            </div>
-        </div>
-        <div class="price-box">
-            <div class="price-title">GPT Plus 月付套餐</div>
-            <div class="price-value">¥140 <span style="font-size:1rem;color:#6b7280;font-weight:400;">/月</span></div>
-            <div class="price-desc">支持微信支付，5分钟内自动到账</div>
-            <button class="pay-btn" onclick="window.open('https://sc.i6ls.com//links/75DF1115','_blank')">
-                <i class="fas fa-bolt"></i> 一键充值
-            </button>
-        </div>
-        <div class="bottom-btns">
-            <button class="main" onclick="window.open('https://sc.i6ls.com//links/75DF1115','_blank')">
-                <i class="fas fa-bolt"></i> 一键充值
-            </button>
-            <button class="secondary" onclick="window.open('https://video-sh.cloudvideocdn.taobao.com/73bbe9f95b148212/c3deacc6f692e04c/20250404_8be5b5f781d3f9ba_514196921671_255715972792866_published_mp4_264_hd_taobao.mp4?auth_key=1750918965-0-0-b180cebeb8c60a3f4f204201c7c90ab9&biz=tbs_vsucai-fca8eb404f9d40f3&t=213371c017509162652305736e0f27&t=213371c017509162652305736e0f27&b=tbs_vsucai&p=cloudvideo_http_tb_seller_vsucai_publish','_blank')">
-                <i class="fas fa-play"></i> 充值教程
-            </button>
-        </div>
+  <header>
+    <h1>🚀 GPT Plus 会员代充平台</h1>
+    <p style="text-align:center; font-size: 16px; color: #666;">价格优惠 · 安全可靠 · 极速到账</p>
+  </header>
+
+  <section>
+    <h2>我们的优势</h2>
+    <div class="advantage-grid">
+      <div class="advantage-card">
+        <h3>💰 限时优惠价 ¥138.88</h3>
+        <p>比官网便宜，每月仅需 138.88 元</p>
+      </div>
+      <div class="advantage-card">
+        <h3>🧾 微信支付免信用卡</h3>
+        <p>支持微信付款，国内轻松付款</p>
+      </div>
+      <div class="advantage-card">
+        <h3>⚡ 5分钟内到账</h3>
+        <p>全自动处理，成功率 100%</p>
+      </div>
+      <div class="advantage-card">
+        <h3>🔐 银行级加密传输</h3>
+        <p>我们不会存储任何账号密码信息</p>
+      </div>
+      <div class="advantage-card">
+        <h3>🎯 一键充值操作简单</h3>
+        <p>卡密购买+提交账号，即刻充值</p>
+      </div>
+      <div class="advantage-card">
+        <h3>📽️ 图文教程+演示视频</h3>
+        <p>新手友好，详细指引每一步</p>
+      </div>
     </div>
+  </section>
+
+  <section>
+    <h2 style="margin-bottom: 16px;">🧩 极速充值 · 只需三步</h2>
+    <div class="steps-inline">
+      🛒 下单卡密 → 📝 提交 GPT 账号 → ⚡ 等待到账（约 5 分钟）
+    </div>
+    <p style="font-size: 13px; color: #888; margin-bottom: 16px; text-align: center;">👉 操作不懂？点击查看 <a href="http://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/514196921671.mp4" target="_blank">充值教程</a> ｜ 有问题？<a href="#">联系客服</a></p>
+    
+    <div style="display: flex; justify-content: space-between; gap: 12px; margin-bottom: 24px;">
+      <a href="https://sc.i6ls.com//details/F8B289BE" class="btn primary-btn" target="_blank" style="flex: 1; text-align: center;">🛒 购买卡密</a>
+      <a href="https://gptplus.biz/" class="btn secondary" target="_blank" style="flex: 1; text-align: center;">⚙️ 跳转代充平台</a>
+      <a href="http://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/514196921671.mp4" class="btn secondary" target="_blank" style="flex: 1; text-align: center;">📖 查看教程</a>
+    </div>
+    
+    <div class="account-banner">
+      <div class="banner-text">
+        <h3>👤 还没有 GPT 账号？</h3>
+        <p>* 该账号为 GPT 免费账号，需另行代充才能使用 Plus 功能</p>
+      </div>
+      <a href="https://sc.i6ls.com//details/48B160DB" class="btn primary-btn" target="_blank">👉 购买 GPT 免费账号</a>
+    </div>
+  </section>
+
+  <section>
+    <div class="price-box">
+      <h2>💡 GPT Plus 月付套餐</h2>
+      <p><strong>¥138.88 / 月</strong>（原价 ¥140）</p>
+      <p>支持微信付款，5分钟自动到账</p>
+      <a href="https://sc.i6ls.com//details/F8B289BE" class="primary" target="_blank" style="text-decoration: none;">🔋 一键充值</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>本平台为第三方代充服务，非 OpenAI 官方平台</p>
+    <p>所有交易均加密处理，保障您的账号与信息安全</p>
+  </footer>
+
+  <div class="wechat-float">
+    <img src="客服微信二维码.jpg" alt="客服微信" title="扫码添加微信客服">
+  </div>
 </body>
 </html> 
