@@ -167,8 +167,9 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
-      margin: var(--space-md) 0;
+      margin: var(--space-md) auto;
       width: 100%;
+      max-width: 800px;
     }
 
     .btn {
@@ -331,17 +332,19 @@
 
       .btn-group {
         grid-template-columns: 1fr;
+        width: auto;
         max-width: 200px;
-        margin: 0 auto;
-        display: inline-grid;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .btn {
-        width: 100%;
-        display: inline-flex;
+        width: 200px;
+        display: flex;
         align-items: center;
         justify-content: center;
         height: 42px;
+        margin: 0 auto;
       }
 
       .price-card {
