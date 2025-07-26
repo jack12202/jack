@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GPT Plus 会员代充平台</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: rgba(99, 102, 241, 0.1);
+      --accent: #f97316;
+      --gray-100: #f4f4f5;
+      --gray-200: #e4e4e7;
+      --gray-300: #d4d4d8;
+      --gray-400: #a1a1aa;
+      --gray-500: #71717a;
+      --gray-600: #52525b;
+      --radius-lg: 24px;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 8px 16px rgba(99, 102, 241, 0.08);
+      --shadow-lg: 0 12px 24px rgba(99, 102, 241, 0.12);
+      --space-xs: 12px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 32px;
+      --space-xl: 48px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: 
+        radial-gradient(circle at 0% 0%, var(--primary-light) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, var(--primary-light) 0%, transparent 50%),
+        linear-gradient(135deg, rgba(99, 102, 241, 0.03) 0%, rgba(99, 102, 241, 0.06) 100%);
+      color: var(--gray-600);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-sm);
+    }
+
+    header {
+      text-align: center;
+      padding: var(--space-md) 0;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: var(--space-xs);
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gray-600);
+      text-align: center;
+      margin: var(--space-md) 0 var(--space-md);
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--gray-500);
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--space-md);
+      margin: var(--space-lg) 0;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: var(--space-md);
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(99, 102, 241, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(99, 102, 241, 0.16);
+    }
+
+    .icon-circle {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .icon-circle svg {
+      width: 20px;
+      height: 20px;
+      color: white;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      margin: var(--space-xs) 0;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--gray-500);
+      margin: 0;
+    }
+
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-lg);
+      margin: var(--space-lg) 0;
+      padding: var(--space-md);
+      background: white;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(99, 102, 241, 0.08);
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .step-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .step-arrow {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin: 0 var(--space-xs);
+    }
+
+    .btn-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: var(--space-md) auto;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .btn {
+      padding: 10px var(--space-md);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.2s ease;
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.25);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--gray-600);
+      border: 1px solid var(--gray-200);
+    }
+
+    .btn-secondary:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-300);
+      color: var(--primary);
+    }
+
+    .btn-text {
+      background: transparent;
+      color: var(--primary);
+      padding: 8px var(--space-sm);
+      border: none;
+    }
+
+    .btn-text:hover {
+      background: var(--primary-light);
+    }
+
+    .price-card {
+      background: #fefefe;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 32px;
+      max-width: 500px;
+      margin: var(--space-xl) auto;
+      border: 1px solid rgba(99, 102, 241, 0.12);
+    }
+
+    .price-card:hover {
+      border-color: rgba(99, 102, 241, 0.2);
+      box-shadow: 0 16px 32px rgba(99, 102, 241, 0.16);
+    }
+
+    .price-card h2 {
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    .price-tag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      margin: var(--space-md) 0;
+    }
+
+    .price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .price-original {
+      color: var(--gray-400);
+      text-decoration: line-through;
+      font-size: 1.1rem;
+    }
+
+    .badge {
+      background: var(--accent);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: var(--gray-500);
+      text-align: center;
+      margin: var(--space-sm) 0;
+    }
+
+    .disclaimer {
+      text-align: center;
+      color: var(--gray-500);
+      font-size: 0.75rem;
+      margin: var(--space-xl) 0;
+    }
+
+    .wechat-float {
+      position: fixed;
+      bottom: var(--space-md);
+      right: var(--space-md);
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .wechat-float:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: var(--space-xs);
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        flex-direction: column;
+        gap: var(--space-md);
+      }
+
+      .step-arrow {
+        transform: rotate(90deg);
+      }
+
+      .btn-group {
+        grid-template-columns: 1fr;
+        width: auto;
+        max-width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .btn {
+        width: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 42px;
+        margin: 0 auto;
+      }
+
+      .price-card {
+        margin: var(--space-lg) var(--space-sm);
+        padding: var(--space-lg);
+      }
+
+      :root {
+        --radius-lg: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Modal styles */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      background: white;
+      padding: var(--space-lg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      z-index: 1001;
+      display: none;
+      opacity: 0;
+      transition: all 0.3s ease;
+      max-width: 90%;
+      width: auto;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid rgba(99, 102, 241, 0.12);
+    }
+
+    .modal-container.active {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      display: block;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: var(--space-sm);
+      right: var(--space-sm);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gray-100);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-600);
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--gray-200);
+      color: var(--gray-700);
+    }
+
+    .qr-container {
+      text-align: center;
+      padding: var(--space-md) var(--space-lg);
+    }
+
+    .qr-container img {
+      max-width: 280px;
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-lg);
+      margin: var(--space-md) 0;
+    }
+
+    .qr-title {
+      font-size: 1.25rem;
+      color: var(--gray-700);
+      margin-bottom: var(--space-xs);
+      font-weight: 600;
+    }
+
+    .qr-subtitle {
+      font-size: 1rem;
+      color: var(--gray-500);
+      margin-bottom: var(--space-md);
+    }
+
+    @media (max-width: 768px) {
+      .modal-container {
+        width: 90%;
+        padding: var(--space-md);
+      }
+
+      .qr-container {
+        padding: var(--space-sm);
+      }
+
+      .qr-container img {
+        max-width: 240px;
+      }
+    }
+
+    .account-section {
+      margin: var(--space-md) 0;
+      text-align: center;
+    }
+
+    .account-section .hint {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .account-section .note {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      margin-top: 6px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <nav style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--gray-200); height: 60px; display: flex; align-items: center;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      <div style="font-weight: 600; color: var(--primary); font-size: 1.1rem; display: flex; align-items: center; gap: 6px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+        </svg>
+        GPT Plus
+      </div>
+      
+      <!-- 桌面端菜单 -->
+      <div class="desktop-menu" style="display: flex; gap: 24px; font-size: 0.95rem;">
+        <a href="#advantages" style="color: var(--primary); text-decoration: none; font-weight: 500; position: relative; padding: 4px 0;">优势介绍</a>
+        <a href="#pricing" style="color: var(--primary); text-decoration: none; font-weight: 500; position: relative; padding: 4px 0;">购买套餐</a>
+        <a href="#" onclick="toggleQRModal(); return false;" style="color: var(--primary); text-decoration: none; font-weight: 500; position: relative; padding: 4px 0;">联系客服</a>
+      </div>
+      
+      <!-- 移动端菜单按钮 -->
+      <div class="mobile-menu-button" style="display: none; cursor: pointer;" onclick="toggleMobileMenu()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </div>
+    </div>
+    
+    <!-- 移动端下拉菜单 -->
+    <div id="mobile-menu" style="display: none; position: fixed; top: 60px; left: 0; right: 0; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 99;">
+      <div style="display: flex; flex-direction: column; padding: 16px;">
+        <a href="#advantages" style="color: var(--primary); text-decoration: none; padding: 12px 16px; border-bottom: 1px solid var(--gray-100);" onclick="closeMobileMenu()">优势介绍</a>
+        <a href="#pricing" style="color: var(--primary); text-decoration: none; padding: 12px 16px; border-bottom: 1px solid var(--gray-100);" onclick="closeMobileMenu()">购买套餐</a>
+        <a href="#" style="color: var(--primary); text-decoration: none; padding: 12px 16px;" onclick="toggleQRModal(); closeMobileMenu(); return false;">联系客服</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>🚀 GPT Plus 官方通道代充平台</h1>
+      <p class="subtitle">微信直充 · 不用外卡 · 无封号风险</p>
+    </header>
+
+    <section id="advantages">
+      <h2>我们的优势</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3>限时优惠价 ¥138.88</h3>
+          <p>走安全通道，还比官网省 ¥11.12</p>
+        </div>
+        <div class="card">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3>微信支付免信用卡</h3>
+          <p>国内支付更便捷</p>
+        </div>
+        <div class="card">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <h3>5分钟内到账</h3>
+          <p>自动处理，成功率 100%</p>
+        </div>
+        <div class="card">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+          </div>
+          <h3>银行级加密传输</h3>
+          <p>不保存账号密码信息</p>
+        </div>
+        <div class="card">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
+            </svg>
+          </div>
+          <h3>一键充值操作简单</h3>
+          <p>购买卡密后快速到账</p>
+        </div>
+        <div class="card">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3>视频教程讲解清晰</h3>
+          <p>新手也能轻松上手</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🧩 极速充值 · 只需三步</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-icon">1</div>
+          <span>下单卡密</span>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-icon">2</div>
+          <span>提交账号</span>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-icon">3</div>
+          <span>等待到账</span>
+        </div>
+      </div>
+      <p class="note">👉 操作不懂？点击查看 <a href="http://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/514196921671.mp4" target="_blank" style="color: var(--primary);">充值教程</a> ｜ 有问题？<a href="#" onclick="toggleQRModal(); return false;" style="color: var(--primary);">联系客服</a></p>
+    </section>
+
+    <section id="pricing">
+      <div style="text-align: center;">
+        <div class="btn-group">
+          <a href="https://sc.i6ls.com//details/F8B289BE" class="btn btn-primary" target="_blank">🛒 购买卡密</a>
+          <a href="https://gptplus.biz/" class="btn btn-secondary" target="_blank">⚙️ 跳转代充平台</a>
+          <a href="http://cloud.video.taobao.com/play/u/null/p/1/e/6/t/1/514196921671.mp4" class="btn btn-secondary" target="_blank">📖 查看教程</a>
+        </div>
+      </div>
+
+      <div class="pricing-section" style="border: 2px solid var(--primary-light); border-radius: var(--radius-lg); padding: var(--space-md); margin: var(--space-md) auto; max-width: 500px;">
+        <h2>GPT Plus 月付套餐</h2>
+        <div class="price-tag">
+          <span class="badge">🔥 限时优惠</span>
+          <span class="price">¥138.88</span>
+          <span class="price-original">¥150</span>
+        </div>
+        <p class="note">走 iOS 官方通道，5 分钟自动到账，无封号风险</p>
+        
+        <div style="text-align: center;">
+          <a href="https://sc.i6ls.com//details/F8B289BE" class="btn btn-primary" style="width: 200px; display: inline-flex; align-items: center; justify-content: center; height: 42px;" target="_blank">
+            🔋 一键充值
+          </a>
+        </div>
+
+        <div class="account-section">
+          <p class="hint">
+            还没有 GPT 账号？点击下方购买微软注册的普通账号
+          </p>
+          <a href="https://sc.i6ls.com//details/48B160DB" class="btn btn-secondary" target="_blank" style="max-width: 200px; display: inline-flex; align-items: center; justify-content: center; text-align: center; margin: 0 auto; height: 42px;">
+            👥 购买 GPT 普通账号
+          </a>
+          <p class="note">
+            * 该账号为微软注册的普通账号，不含 Plus 会员，如需使用需另行充值
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="disclaimer">
+      <p>本服务专为国内用户提供便捷充值通道，使用 iOS 官方渠道，安全稳定</p>
+      <p>所有交易均加密处理，保障账号信息不外泄</p>
+    </div>
+  </div>
+
+  <div class="wechat-float" onclick="toggleQRModal()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+      <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+    </svg>
+  </div>
+
+  <div class="modal-backdrop" id="qrModalBackdrop" onclick="toggleQRModal()"></div>
+  <div class="modal-container" id="qrModalContainer">
+    <button class="modal-close" onclick="toggleQRModal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="qr-container">
+      <div class="qr-title">扫码添加客服微信</div>
+      <div class="qr-subtitle">工作时间：9:00 - 22:00</div>
+      <img src="客服微信二维码.png" alt="客服微信二维码">
+      <p class="note">添加时请备注：GPT Plus</p>
+    </div>
+  </div>
+
+  <script>
+    function toggleQRModal() {
+      const backdrop = document.getElementById('qrModalBackdrop');
+      const container = document.getElementById('qrModalContainer');
+      
+      if (backdrop.style.display === 'block') {
+        container.classList.remove('active');
+        backdrop.classList.remove('active');
+        setTimeout(() => {
+          backdrop.style.display = 'none';
+          container.style.display = 'none';
+        }, 300);
+      } else {
+        backdrop.style.display = 'block';
+        container.style.display = 'block';
+        setTimeout(() => {
+          backdrop.classList.add('active');
+          container.classList.add('active');
+        }, 10);
+      }
+    }
+    
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu.style.display === 'block') {
+        mobileMenu.style.display = 'none';
+      } else {
+        mobileMenu.style.display = 'block';
+      }
+    }
+    
+    function closeMobileMenu() {
+      document.getElementById('mobile-menu').style.display = 'none';
+    }
+    
+    // 添加响应式菜单切换
+    function checkScreenSize() {
+      const desktopMenu = document.querySelector('.desktop-menu');
+      const mobileButton = document.querySelector('.mobile-menu-button');
+      
+      if (window.innerWidth <= 768) {
+        desktopMenu.style.display = 'none';
+        mobileButton.style.display = 'block';
+      } else {
+        desktopMenu.style.display = 'flex';
+        mobileButton.style.display = 'none';
+        document.getElementById('mobile-menu').style.display = 'none';
+      }
+    }
+    
+    // 初始化检查
+    window.addEventListener('load', checkScreenSize);
+    window.addEventListener('resize', checkScreenSize);
+    
+    // 平滑滚动到锚点
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        if (this.getAttribute('href') !== '#') {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html> 
