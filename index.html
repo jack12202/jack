@@ -433,6 +433,92 @@
     background: #e0e7ff;
     transform: translateY(-1px);
   }
+  /* 闹钟按钮样式 */
+  .alarm-fab {
+    position: fixed;
+    right: 22px;
+    top: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    padding: 8px 12px;
+    border-radius: 24px;
+    background: #ffffff;
+    color: #111;
+    border: none;
+    box-shadow: 0 6px 26px rgba(0,0,0,.2);
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 50;
+  }
+  .alarm-fab-text {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+    color: #ec4899;
+  }
+  .alarm-drawer {
+    position: fixed;
+    right: 22px;
+    top: 80px;
+    width: 260px;
+    background: #fff;
+    color: #111;
+    border-radius: 14px;
+    box-shadow: 0 12px 36px rgba(0,0,0,.22);
+    transform: translateY(-20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all .2s ease;
+    z-index: 50;
+  }
+  .alarm-drawer.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .alarm-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-bottom: 1px solid #eee;
+  }
+  .alarm-head button {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .alarm-body {
+    padding: 12px 14px 16px;
+    font-size: .92rem;
+  }
+  .alarm-body p {
+    margin: 10px 0;
+  }
+  .alarm-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .alarm-btn {
+    width: 100%;
+    padding: 8px 0;
+    background: linear-gradient(180deg, #f9a8d4 0%, #ec4899 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .alarm-btn:hover {
+    filter: brightness(1.05);
+  }
+
   /* 手机端：把客服浮窗提到置底 CTA 之上 */
   @media (max-width: 640px) {
     /* 悬浮 CTA 高度约 56px + 底部间距16px = 72px，这里提到 80px 更保险 */
@@ -441,6 +527,18 @@
     }
     .video-fab {
       bottom: 80px !important;
+    }
+    /* 移动端闹钟按钮适配 */
+    .alarm-fab {
+      top: 16px !important;
+      right: 16px !important;
+      padding: 6px 10px !important;
+      font-size: 18px !important;
+    }
+    .alarm-drawer {
+      width: 90% !important;
+      right: 5% !important;
+      left: 5% !important;
     }
   }
 </style>
@@ -524,6 +622,25 @@
       GPT Plus 自动化处理，极简 3 步完成充值
     </footer>
   </main>
+
+  <!-- 闹钟按钮 -->
+  <button class="alarm-fab" id="alarmFab" aria-label="设置闹钟">
+    <span>⏰</span>
+    <span class="alarm-fab-text">设置闹钟</span>
+  </button>
+  <div class="alarm-drawer" id="alarmDrawer" aria-hidden="true">
+    <div class="alarm-head">
+      <strong>设置闹钟提醒</strong>
+      <button id="alarmClose" aria-label="关闭">✕</button>
+    </div>
+    <div class="alarm-body">
+      <p>设置提醒时间：</p>
+      <input type="datetime-local" class="alarm-input" id="alarmTime">
+      <p>提醒内容：</p>
+      <input type="text" class="alarm-input" id="alarmText" placeholder="例如：GPT Plus 充值提醒">
+      <button class="alarm-btn" id="setAlarm">设置提醒</button>
+    </div>
+  </div>
 
   <!-- 客服浮窗 -->
   <button class="cs-fab" id="csFab" aria-label="联系客服">
@@ -640,6 +757,91 @@
     openFlow?.addEventListener('click', (e)=>{ e.preventDefault(); flowMask?.classList.add('show'); flowMask?.setAttribute('aria-hidden','false'); });
     closeFlow?.addEventListener('click', ()=>{ flowMask?.classList.remove('show'); flowMask?.setAttribute('aria-hidden','true'); });
     flowMask?.addEventListener('click', (e)=>{ if(e.target===flowMask){ flowMask.classList.remove('show'); flowMask.setAttribute('aria-hidden','true'); }});
+    
+    // 闹钟浮窗控制
+    const alarmFab = document.getElementById('alarmFab');
+    const alarmDrawer = document.getElementById('alarmDrawer');
+    const alarmClose = document.getElementById('alarmClose');
+    const setAlarmBtn = document.getElementById('setAlarm');
+    
+    function toggleAlarmDrawer(show) {
+      if(show) {
+        alarmDrawer.classList.add('open');
+        alarmDrawer.setAttribute('aria-hidden', 'false');
+      } else {
+        alarmDrawer.classList.remove('open');
+        alarmDrawer.setAttribute('aria-hidden', 'true');
+      }
+    }
+    
+    alarmFab?.addEventListener('click', () => toggleAlarmDrawer(true));
+    alarmClose?.addEventListener('click', () => toggleAlarmDrawer(false));
+    
+    // 移动端触摸事件支持
+    alarmFab?.addEventListener('touchend', (e) => {
+      e.preventDefault(); // 防止触摸事件后的点击事件
+      toggleAlarmDrawer(true);
+    });
+    alarmClose?.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      toggleAlarmDrawer(false);
+    });
+    
+    // 设置闹钟提醒功能
+    setAlarmBtn?.addEventListener('click', setAlarm);
+    setAlarmBtn?.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      setAlarm();
+    });
+    
+    function setAlarm() {
+      const alarmTime = document.getElementById('alarmTime').value;
+      const alarmText = document.getElementById('alarmText').value || 'GPT Plus 充值提醒';
+      
+      if(!alarmTime) {
+        alert('请先设置提醒时间');
+        return;
+      }
+      
+      // 使用本地存储保存闹钟设置
+      const alarms = JSON.parse(localStorage.getItem('gptPlusAlarms') || '[]');
+      alarms.push({
+        time: alarmTime,
+        text: alarmText,
+        id: Date.now()
+      });
+      localStorage.setItem('gptPlusAlarms', JSON.stringify(alarms));
+      
+      // 如果浏览器支持通知，则请求权限
+      if('Notification' in window) {
+        Notification.requestPermission().then(permission => {
+          if(permission === 'granted') {
+            // 计算闹钟时间与当前时间的差值（毫秒）
+            const alarmDate = new Date(alarmTime);
+            const now = new Date();
+            const timeUntilAlarm = alarmDate.getTime() - now.getTime();
+            
+            if(timeUntilAlarm > 0) {
+              // 设置定时器
+              setTimeout(() => {
+                new Notification('GPT Plus 提醒', {
+                  body: alarmText,
+                  icon: '/favicon.ico' // 可选：添加网站图标
+                });
+              }, timeUntilAlarm);
+              
+              alert(`闹钟设置成功！将在 ${alarmDate.toLocaleString()} 提醒您。`);
+              toggleAlarmDrawer(false);
+            } else {
+              alert('请设置一个未来的时间');
+            }
+          }
+        });
+      } else {
+        alert('您的浏览器不支持通知功能，但我们已保存您的提醒设置');
+        toggleAlarmDrawer(false);
+      }
+    }
     
     // 视频教程浮窗控制
     const videoFab = document.getElementById('videoFab');
