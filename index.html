@@ -462,6 +462,7 @@
     margin-bottom: 8px;
   }
   .countdown-body { max-width: 720px; margin: 0 auto; }
+.mobile-br { display: none; }
   .countdown-body p {
     margin: 6px 0;
     font-size: 0.92rem;
@@ -487,6 +488,7 @@
   @media (max-width: 480px) {
     #countdown-banner { width: calc(100% - 24px); }
     #timer { font-size: 1.3rem; }
+    .mobile-br { display: inline; }
   }
 </style>
 </head>
@@ -498,7 +500,7 @@
       <div id="countdown-banner">
         <div class="countdown-title">紧急服务升级 · 价格调整公告</div>
         <div class="countdown-body">
-          <p>为应对近期流量暴增及恶意攻击，保障 100% 稳定，<br />服务体系已完成紧急升级。</p>
+          <p>为应对近期流量暴增及恶意攻击，<br class="mobile-br" />保障 100% 稳定，<br />服务体系已完成紧急升级。</p>
           <p>原 <strong class="hl">¥138.88</strong> 体验价最后保留倒计时：</p>
           <div id="timer">
             <span id="days">--</span> 天
