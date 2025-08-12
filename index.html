@@ -443,6 +443,51 @@
       bottom: 80px !important;
     }
   }
+
+  /* ==================== 服务升级倒计时组件样式 ==================== */
+  #countdown-banner {
+    width: calc(100% - 48px);
+    margin: -16px auto 24px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .countdown-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fcd34d; /* 金色，突出标题 */
+    margin-bottom: 8px;
+  }
+  .countdown-body { max-width: 720px; margin: 0 auto; }
+  .countdown-body p {
+    margin: 6px 0;
+    font-size: 0.92rem;
+    line-height: 1.8;
+    opacity: 0.92;
+  }
+  .countdown-body .hl { color:#fde68a; font-weight:800; }
+  #timer { font-variant-numeric: tabular-nums; }
+  #timer {
+    margin: 12px 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+  #timer span {
+    display: inline-block;
+    min-width: 40px;
+  }
+  .countdown-footer {
+    font-size: 0.8rem !important;
+    opacity: 0.8 !important;
+  }
+  @media (max-width: 480px) {
+    #countdown-banner { width: calc(100% - 24px); }
+    #timer { font-size: 1.3rem; }
+  }
 </style>
 </head>
 
@@ -450,14 +495,28 @@
   <main class="card">
     <!-- 顶部 -->
     <header class="card-header">
+      <div id="countdown-banner">
+        <div class="countdown-title">紧急服务升级 · 价格调整公告</div>
+        <div class="countdown-body">
+          <p>为应对近期流量暴增及恶意攻击，保障 100% 稳定，<br />服务体系已完成紧急升级。</p>
+          <p>原 <strong class="hl">¥138.88</strong> 体验价最后保留倒计时：</p>
+          <div id="timer">
+            <span id="days">--</span> 天
+            <span id="hours">--</span> 小时
+            <span id="minutes">--</span> 分
+            <span id="seconds">--</span> 秒
+          </div>
+          <p class="countdown-footer">将于【北京时间 8月15日 周五 24:00】恢复至 ¥159 标准服务价。</p>
+        </div>
+      </div>
       <h1>GPT Plus 充值平台</h1>
       <!-- 🔥 价格 + CTA -->
       <div class="price">
         <span class="price-val">¥138.88</span>
-        <span class="price-tag">月付·限时特惠</span>
+        <span class="price-tag">月付·最终体验价</span>
       </div>
 
-      <button class="btn-buy" id="buyBtn" aria-label="立即购买卡密">🛒 立即购买卡密</button>
+      <button class="btn-buy" id="buyBtn" aria-label="立即购买卡密">🛒 立即锁定138元体验价</button>
       <div class="steps-mini">
         <span class="step-pill">1 下单卡密</span>
         <span class="step-pill">2 提交账号</span>
@@ -605,7 +664,7 @@
   </div>
 
   <!-- 移动端底部浮窗 CTA -->
-  <a href="https://sc.i6ls.com//details/A3712CB0" class="cta-sticky" role="button" aria-label="¥138.88 立即购买">¥138.88 立即购买</a>
+  <a href="https://sc.i6ls.com//details/A3712CB0" class="cta-sticky" role="button" aria-label="¥138.88 立即购买">¥138.88 锁定最后体验价</a>
   <div class="flow-mask" id="flowMask" aria-hidden="true">
     <div class="flow-modal">
       <div class="flow-head">
@@ -734,6 +793,44 @@
       e.preventDefault();
       toggleVideoDrawer(true, true);
     });
+  </script>
+
+  <script>
+    // ==================== 涨价倒计时逻辑 ====================
+    (function() {
+      // 目标日期：本周五 (2025年8月15日) 的午夜
+      const targetDate = new Date('2025-08-15T23:59:59').getTime();
+      const banner = document.getElementById('countdown-banner');
+
+      if (!banner) return;
+
+      const countdownInterval = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          banner.style.display = 'none'; // 倒计时结束后隐藏横幅
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        const daysEl = document.getElementById("days");
+        const hoursEl = document.getElementById("hours");
+        const minutesEl = document.getElementById("minutes");
+        const secondsEl = document.getElementById("seconds");
+
+        if(daysEl) daysEl.textContent = String(days).padStart(2, '0');
+        if(hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+        if(minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+        if(secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+
+      }, 1000);
+    })();
   </script>
 </body>
 </html>
