@@ -57,18 +57,29 @@
       justify-content: center;
       gap: 12px;
     }
-    .badge {
-      padding: 4px 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      border-radius: 9999px;
-      background: #ffffff1a;
-      backdrop-filter: blur(12px);
-      border: 1px solid #ffffff30;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
+      .badge {
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    background: #ffffff1a;
+    backdrop-filter: blur(12px);
+    border: 1px solid #ffffff30;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .badge.clickable {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    border: 1px solid #818cf8;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    transition: all 0.2s ease;
+  }
+  .badge.clickable:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+    background: linear-gradient(135deg, #5b52e8 0%, #7c3aed 100%);
+  }
 
     /* 指标区域 */
     .stats {
@@ -273,25 +284,15 @@
     margin-left:8px; padding:4px 8px; font-size:.78rem;
     border-radius:8px; border:1px solid #e5e7eb; background:#f9fafb; cursor:pointer;
   }
+  .qq-toggle-btn{
+    width:100%; margin-top:8px; padding:6px 8px; font-size:.8rem;
+    border:1px solid #d1d5db; background:#f8fafc; border-radius:6px;
+    cursor:pointer; color:#374151; transition:background .2s;
+  }
+  .qq-toggle-btn:hover{ background:#e5e7eb; }
+  .qq-content{ margin-top:8px; }
   .qr{ display:block; width:100%; border-radius:10px; margin-top:8px; }
   
-  /* —— 视频教程浮窗 —— */
-  .video-fab{
-    position:fixed; left:22px; bottom:22px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width:auto; padding: 8px 12px; border-radius:24px;
-    background:#ffffff; color:#111; border:none;
-    box-shadow:0 6px 26px rgba(0,0,0,.2);
-    font-size:22px; cursor:pointer;
-  }
-  .video-fab-text {
-    font-size: 12px;
-    font-weight: 600;
-    margin-top: 4px;
-    color: #4f46e5;
-  }
   .video-drawer{
     position:fixed; left:50%; bottom:50%; transform:translate(-50%, 50%) scale(0.9);
     width:min(90vw, 600px); background:#fff; color:#111;
@@ -376,6 +377,17 @@
   .flow-body ol{ margin:0 0 6px 18px; }
   .flow-body li{ margin:8px 0; line-height:1.6; }
   .tips{ margin-top:6px; font-size:.9rem; color:#6b7280; }
+  .tips.highlight{ 
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #f59e0b;
+    font-weight: 600;
+    text-align: center;
+    margin: 16px 0;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+  }
   /* —— 优化对齐：垂直左对齐列表 —— */
   .buy-notes {
     list-style: none;
@@ -399,6 +411,26 @@
     color: #34d399;
     font-size: 1rem;
   }
+  .buy-notes li.highlight {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #f59e0b;
+    font-weight: 600;
+    margin: 16px 0;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .buy-notes li.highlight:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+  }
+  .buy-notes li.highlight::before {
+    content: '💬';
+    color: #f59e0b;
+  }
   /* —— flow-modal 客服入口样式 —— */
   .flow-support { margin-top:16px; padding-top:12px; border-top:1px solid #e5e7eb; }
   .flow-support .support-title {
@@ -413,6 +445,13 @@
     cursor:pointer; transition:background .2s;
   }
   .flow-support .copy-btn:hover { background:#e5e7eb; }
+  .flow-qq-toggle-btn{
+    width:100%; margin-top:8px; padding:6px 8px; font-size:.8rem;
+    border:1px solid #d1d5db; background:#f8fafc; border-radius:6px;
+    cursor:pointer; color:#374151; transition:background .2s;
+  }
+  .flow-qq-toggle-btn:hover{ background:#e5e7eb; }
+  .flow-qq-content{ margin-top:8px; }
   .video-btn {
     display: inline-flex;
     align-items: center;
@@ -437,9 +476,6 @@
   @media (max-width: 640px) {
     /* 悬浮 CTA 高度约 56px + 底部间距16px = 72px，这里提到 80px 更保险 */
     .cs-fab {
-      bottom: 80px !important;
-    }
-    .video-fab {
       bottom: 80px !important;
     }
   }
@@ -472,14 +508,14 @@
       <ul class="buy-notes">
         <li>官方 iOS 通道 · 微信直充 · 5 分钟自动到帐</li>
         <li>无需提供账号密码，支持新老账号</li>
-        <li>如遇问题，右下角可随时联系人工客服</li>
+        <li class="highlight" id="highlightContact">添加人工，领图文详细教程</li>
       </ul>
       
       <div class="badges">
         <span class="badge">📱 官方 iOS 通道</span>
         <span class="badge">🔒 不封号</span>
         <span class="badge">🛡️ 不泄露密码</span>
-        <span class="badge">🎥 视频教程</span>
+        <span class="badge clickable" id="videoTutorialBtn">🎥 视频教程</span>
       </div>
 
       <div class="stats">
@@ -539,8 +575,13 @@
     <div class="cs-body">
       <p>微信：<b id="wx">Jiage01888</b>
         <button class="copy" onclick="copyText('wx')">复制</button></p>
-      <p>QQ：<b id="qq">1852634132</b>
-        <button class="copy" onclick="copyText('qq')">复制</button></p>
+      <div class="qq-toggle">
+        <button class="qq-toggle-btn" id="qqToggle">微信联系不上时，请联系QQ</button>
+        <div class="qq-content" id="qqContent" style="display: none;">
+          <p>QQ：<b id="qq">1852634132</b>
+            <button class="copy" onclick="copyText('qq')">复制</button></p>
+        </div>
+      </div>
       <!-- 如有二维码可自行替换图片路径 -->
       <!-- <img src="/assets/wechat-qr.jpg" alt="微信二维码" class="qr"> -->
     </div>
@@ -558,12 +599,14 @@
     }
 
     document.getElementById('buyBtn')?.addEventListener('click', function () {
-      window.location.href = 'https://lc.i6ls.com//details/9AC78762';
+      window.open('https://lc.i6ls.com//details/9AC78762', '_blank');
     });
 
     const fab = document.getElementById('csFab');
     const drawer = document.getElementById('csDrawer');
     const closeBtn = document.getElementById('csClose');
+    const qqToggle = document.getElementById('qqToggle');
+    const qqContent = document.getElementById('qqContent');
 
     function toggleDrawer(show){
       if(show){ drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); }
@@ -571,6 +614,25 @@
     }
     fab?.addEventListener('click', ()=> toggleDrawer(true));
     closeBtn?.addEventListener('click', ()=> toggleDrawer(false));
+    
+    // QQ折叠展开功能
+    qqToggle?.addEventListener('click', ()=> {
+      const isHidden = qqContent.style.display === 'none';
+      qqContent.style.display = isHidden ? 'block' : 'none';
+      qqToggle.textContent = isHidden ? '收起QQ联系方式' : '微信联系不上时，请联系QQ';
+    });
+    
+    // 突出显示的客服联系功能
+    const highlightContact = document.getElementById('highlightContact');
+    highlightContact?.addEventListener('click', ()=> {
+      toggleDrawer(true);
+    });
+    
+    // 视频教程按钮功能
+    const videoTutorialBtn = document.getElementById('videoTutorialBtn');
+    videoTutorialBtn?.addEventListener('click', ()=> {
+      toggleVideoDrawer(true, false);
+    });
 
     function copyText(id){
       const text = document.getElementById(id)?.textContent || '';
@@ -581,11 +643,6 @@
     }
     window.copyText = copyText;
   </script>
-  <!-- 视频教程浮窗 -->
-  <button class="video-fab" id="videoFab" aria-label="视频教程">
-    <span>🎬</span>
-    <span class="video-fab-text">视频教程</span>
-  </button>
   <div class="video-mask" id="videoMask"></div>
   <div class="video-drawer" id="videoDrawer" aria-hidden="true">
     <div class="video-head">
@@ -606,7 +663,7 @@
   </div>
 
   <!-- 移动端底部浮窗 CTA -->
-  <a href="https://lc.i6ls.com//details/9AC78762" class="cta-sticky" role="button" aria-label="¥159 立即购买">¥159 立即购买</a>
+  <a href="https://lc.i6ls.com//details/9AC78762" target="_blank" class="cta-sticky" role="button" aria-label="¥159 立即购买">¥159 立即购买</a>
   <div class="flow-mask" id="flowMask" aria-hidden="true">
     <div class="flow-modal">
       <div class="flow-head">
@@ -619,16 +676,20 @@
           <li><b>提交账号：</b>按提示填写/确认你的 GPT 账号（无需提供密码）。</li>
           <li><b>自动到帐：</b>系统走 iOS 官方通道，约 5 分钟完成开通。</li>
         </ol>
-        <p class="tips">充值过程中遇到问题，请联系人工协助。</p>
-        <button class="video-btn" id="flowVideoBtn">🎬 观看视频教程</button>
+        <p class="tips highlight">添加人工领图文充值教程</p>
   <div class="flow-support">
     <p class="support-title">客服入口：</p>
     <p>微信：<b id="flow-wx">Jiage01888</b>
        <button class="copy-btn" onclick="copyText('flow-wx')">复制</button>
     </p>
-    <p>QQ：<b id="flow-qq">1852634132</b>
-       <button class="copy-btn" onclick="copyText('flow-qq')">复制</button>
-    </p>
+    <div class="flow-qq-toggle">
+      <button class="flow-qq-toggle-btn" id="flowQqToggle">微信联系不上时，请联系QQ</button>
+      <div class="flow-qq-content" id="flowQqContent" style="display: none;">
+        <p>QQ：<b id="flow-qq">1852634132</b>
+           <button class="copy-btn" onclick="copyText('flow-qq')">复制</button>
+        </p>
+      </div>
+    </div>
   </div>
       </div>
     </div>
@@ -643,7 +704,6 @@
     flowMask?.addEventListener('click', (e)=>{ if(e.target===flowMask){ flowMask.classList.remove('show'); flowMask.setAttribute('aria-hidden','true'); }});
     
     // 视频教程浮窗控制
-    const videoFab = document.getElementById('videoFab');
     const videoDrawer = document.getElementById('videoDrawer');
     const videoClose = document.getElementById('videoClose');
     const videoMask = document.getElementById('videoMask');
@@ -705,15 +765,10 @@
       }
     }
     // 添加点击和触摸事件监听
-    videoFab?.addEventListener('click', ()=> toggleVideoDrawer(true, false));
     videoClose?.addEventListener('click', ()=> toggleVideoDrawer(false));
     videoMask?.addEventListener('click', ()=> toggleVideoDrawer(false));
     
     // 移动端触摸事件支持
-    videoFab?.addEventListener('touchend', (e)=> {
-      e.preventDefault(); // 防止触摸事件后的点击事件
-      toggleVideoDrawer(true, false);
-    });
     videoClose?.addEventListener('touchend', (e)=> {
       e.preventDefault();
       toggleVideoDrawer(false);
@@ -725,15 +780,14 @@
       }
     });
     
-    // 充值流程弹窗中的视频教程按钮
-    const flowVideoBtn = document.getElementById('flowVideoBtn');
-    flowVideoBtn?.addEventListener('click', ()=> {
-      toggleVideoDrawer(true, true); // 标记为从流程弹窗打开
-    });
-    // 移动端触摸事件支持
-    flowVideoBtn?.addEventListener('touchend', (e)=> {
-      e.preventDefault();
-      toggleVideoDrawer(true, true);
+    
+    // 充值流程弹窗中的QQ折叠展开功能
+    const flowQqToggle = document.getElementById('flowQqToggle');
+    const flowQqContent = document.getElementById('flowQqContent');
+    flowQqToggle?.addEventListener('click', ()=> {
+      const isHidden = flowQqContent.style.display === 'none';
+      flowQqContent.style.display = isHidden ? 'block' : 'none';
+      flowQqToggle.textContent = isHidden ? '收起QQ联系方式' : '微信联系不上时，请联系QQ';
     });
   </script>
 
