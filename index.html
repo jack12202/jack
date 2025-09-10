@@ -293,38 +293,6 @@
   .qq-content{ margin-top:8px; }
   .qr{ display:block; width:100%; border-radius:10px; margin-top:8px; }
   
-  .video-drawer{
-    position:fixed; left:50%; bottom:50%; transform:translate(-50%, 50%) scale(0.9);
-    width:min(90vw, 600px); background:#fff; color:#111;
-    border-radius:14px; box-shadow:0 12px 36px rgba(0,0,0,.22);
-    opacity:0; pointer-events:none;
-    transition:all .3s ease;
-    z-index:100;
-  }
-  .video-drawer.open{ 
-    transform:translate(-50%, 50%) scale(1); 
-    opacity:1; 
-    pointer-events:auto; 
-  }
-  .video-head{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:14px 18px; border-bottom:1px solid #eee;
-  }
-  .video-head button{ background:transparent; border:none; font-size:18px; cursor:pointer; }
-  .video-body{ padding:16px 18px 20px; }
-  .video-body video{ width:100%; border-radius:8px; }
-  .video-description{
-    margin:16px 0 0; padding:12px 14px;
-    background:#f9fafb; border-radius:8px;
-    font-size:0.9rem; color:#374151;
-    line-height:1.5;
-  }
-  .video-mask{
-    position:fixed; inset:0; background:rgba(0,0,0,.6);
-    backdrop-filter:blur(3px); z-index:90;
-    display:none;
-  }
-  .video-mask.show{ display:block; }
 
   /* ======== 首屏精简：隐藏激活码验证区 ======== */
   .form-area, .steps { display:none !important; }
@@ -452,26 +420,6 @@
   }
   .flow-qq-toggle-btn:hover{ background:#e5e7eb; }
   .flow-qq-content{ margin-top:8px; }
-  .video-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 12px;
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #4f46e5;
-    background: #eef2ff;
-    border: 1px solid #e0e7ff;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .video-btn:hover {
-    background: #e0e7ff;
-    transform: translateY(-1px);
-  }
   /* 手机端：把客服浮窗提到置底 CTA 之上 */
   @media (max-width: 640px) {
     /* 悬浮 CTA 高度约 56px + 底部间距16px = 72px，这里提到 80px 更保险 */
@@ -512,7 +460,6 @@
         <span class="badge">📱 官方 iOS 通道</span>
         <span class="badge">🔒 不封号</span>
         <span class="badge">🛡️ 不泄露密码</span>
-        <span class="badge clickable" id="videoTutorialBtn">🎥 视频教程</span>
       </div>
 
       <div class="stats">
@@ -625,11 +572,6 @@
       toggleDrawer(true);
     });
     
-    // 视频教程按钮功能
-    const videoTutorialBtn = document.getElementById('videoTutorialBtn');
-    videoTutorialBtn?.addEventListener('click', ()=> {
-      toggleVideoDrawer(true, false);
-    });
 
     function copyText(id){
       const text = document.getElementById(id)?.textContent || '';
@@ -640,24 +582,6 @@
     }
     window.copyText = copyText;
   </script>
-  <div class="video-mask" id="videoMask"></div>
-  <div class="video-drawer" id="videoDrawer" aria-hidden="true">
-    <div class="video-head">
-      <strong>GPT Plus 充值视频教程</strong>
-      <button id="videoClose" aria-label="关闭">✕</button>
-    </div>
-    <div class="video-body">
-      <video controls>
-        <source src="教学视频.mp4" type="video/mp4">
-        您的浏览器不支持视频播放。
-      </video>
-      <div class="video-description">
-        <p><b>📝 视频教程说明：</b></p>
-        <p>本视频详细演示了 GPT Plus 充值的完整流程，包括下单、提交账号信息及充值完成的全过程。按照视频指引操作，5分钟内即可完成充值。</p>
-        <p>如有任何疑问，可随时联系右下角客服获取帮助。</p>
-      </div>
-    </div>
-  </div>
 
   <!-- 移动端底部浮窗 CTA -->
   <a href="https://1c.i6ls.com//details/7A66A9E1" target="_blank" class="cta-sticky" role="button" aria-label="¥159 立即购买">¥159 立即购买</a>
@@ -700,82 +624,6 @@
     closeFlow?.addEventListener('click', ()=>{ flowMask?.classList.remove('show'); flowMask?.setAttribute('aria-hidden','true'); });
     flowMask?.addEventListener('click', (e)=>{ if(e.target===flowMask){ flowMask.classList.remove('show'); flowMask.setAttribute('aria-hidden','true'); }});
     
-    // 视频教程浮窗控制
-    const videoDrawer = document.getElementById('videoDrawer');
-    const videoClose = document.getElementById('videoClose');
-    const videoMask = document.getElementById('videoMask');
-    
-    // 标记视频是否从购买流程弹窗打开
-    let videoOpenedFromFlow = false;
-    
-    function toggleVideoDrawer(show, fromFlow = false){
-      const videoElement = document.querySelector('.video-body video');
-      
-      if(show){
-        videoDrawer.classList.add('open');
-        videoDrawer.setAttribute('aria-hidden','false');
-        videoMask.classList.add('show');
-        document.body.style.overflow = 'hidden'; // 防止背景滚动
-        videoOpenedFromFlow = fromFlow; // 记录是否从流程弹窗打开
-      } else {
-        videoDrawer.classList.remove('open');
-        videoDrawer.setAttribute('aria-hidden','true');
-        videoMask.classList.remove('show');
-        document.body.style.overflow = '';
-        
-        // 强制停止视频播放 - 更彻底的处理方式
-        if(videoElement) {
-          videoElement.pause();
-          videoElement.currentTime = 0; // 重置视频到开始位置
-          
-          // 移动端额外处理
-          // 1. 移除视频源并重新添加
-          const videoSrc = videoElement.querySelector('source')?.src;
-          if(videoSrc) {
-            const parent = videoElement.parentNode;
-            const oldVideo = videoElement;
-            
-            // 创建新的视频元素替换旧的
-            const newVideo = document.createElement('video');
-            newVideo.controls = true;
-            
-            const source = document.createElement('source');
-            source.src = videoSrc;
-            source.type = 'video/mp4';
-            
-            newVideo.appendChild(source);
-            newVideo.appendChild(document.createTextNode('您的浏览器不支持视频播放。'));
-            
-            // 替换视频元素
-            if(parent) {
-              parent.replaceChild(newVideo, oldVideo);
-            }
-          }
-        }
-        
-        // 如果是从购买流程打开的，关闭视频时同时关闭购买流程弹窗
-        if(videoOpenedFromFlow) {
-          flowMask?.classList.remove('show');
-          flowMask?.setAttribute('aria-hidden','true');
-          videoOpenedFromFlow = false;
-        }
-      }
-    }
-    // 添加点击和触摸事件监听
-    videoClose?.addEventListener('click', ()=> toggleVideoDrawer(false));
-    videoMask?.addEventListener('click', ()=> toggleVideoDrawer(false));
-    
-    // 移动端触摸事件支持
-    videoClose?.addEventListener('touchend', (e)=> {
-      e.preventDefault();
-      toggleVideoDrawer(false);
-    });
-    videoMask?.addEventListener('touchend', (e)=> {
-      if(e.target === videoMask) {
-        e.preventDefault();
-        toggleVideoDrawer(false);
-      }
-    });
     
     
     // 充值流程弹窗中的QQ折叠展开功能
