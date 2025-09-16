@@ -526,7 +526,7 @@
   }
   .cost-notice-item {
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.4;
     display: flex;
     align-items: flex-start;
     gap: 8px;
@@ -541,6 +541,22 @@
     color: #dc2626;
     font-weight: 700;
   }
+  .copy-inline {
+    background: rgba(255, 255, 255, 0.2);
+    color: #92400e;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+  .copy-inline:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
 
   /* 手机端：把客服浮窗提到置底 CTA 之上 */
   @media (max-width: 640px) {
@@ -570,20 +586,27 @@
       text-align: center;
     }
     .cost-notice-main {
-      gap: 10px;
+      gap: 8px;
     }
     .cost-notice-item {
       font-size: 0.9rem;
       flex-direction: row;
-      align-items: center;
-      gap: 8px;
+      align-items: flex-start;
+      gap: 6px;
       text-align: left;
-      padding: 8px 0;
+      padding: 4px 0;
     }
     .cost-notice-label {
       min-width: 70px;
       font-size: 0.85rem;
       flex-shrink: 0;
+    }
+    
+    /* 复制按钮移动端优化 */
+    .copy-inline {
+      margin-left: 6px;
+      padding: 2px 5px;
+      font-size: 0.7rem;
     }
   }
   
@@ -634,6 +657,15 @@
               <span class="cost-notice-label">📈 后续趋势：</span>
               价格可能继续上涨，详情请咨询客服微信
             </div>
+            <div class="cost-notice-item">
+              <span class="cost-notice-label">🎁 微信专享：</span>
+              加微信立减 <strong>¥5</strong>，仅需 <strong>¥183</strong>
+            </div>
+            <div class="cost-notice-item">
+              <span class="cost-notice-label">💬 客服微信：</span>
+              <strong id="wechatId">Jiage01888</strong>
+              <button class="copy-inline" onclick="copyText('wechatId')">复制</button>
+            </div>
           </div>
         </div>
       </div>
@@ -645,6 +677,8 @@
       </div>
 
       <button class="btn-buy" id="buyBtn" aria-label="立即购买卡密">🛒 立即购买 (¥188)</button>
+      
+      
       <div class="steps-mini">
         <span class="step-pill">1 下单卡密</span>
         <span class="step-pill">2 提交账号</span>
@@ -655,7 +689,6 @@
       <ul class="buy-notes">
         <li>官方 iOS 通道 · 微信直充 · 5 分钟自动到帐</li>
         <li>无需提供账号密码，支持新老账号</li>
-        <li class="highlight" id="highlightContact">添加人工，领图文详细教程</li>
       </ul>
       
       <div class="badges">
@@ -768,11 +801,6 @@
       qqToggle.textContent = isHidden ? '收起QQ联系方式' : '微信联系不上时，请联系QQ';
     });
     
-    // 突出显示的客服联系功能
-    const highlightContact = document.getElementById('highlightContact');
-    highlightContact?.addEventListener('click', ()=> {
-      toggleDrawer(true);
-    });
     
 
     function copyText(id){
