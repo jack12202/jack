@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="description" content="GPT Plus 官方 iOS 通道代充，¥188/月，微信直充，5 分钟自动到帐" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>GPT Plus 充值平台</title>
 
   <!-- 简单的 CSS，只依赖系统字体 -->
@@ -18,6 +18,9 @@
     }
 
     /* 背景渐变 & 全局排版 */
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont,
@@ -28,6 +31,8 @@
       align-items: center;
       justify-content: center;
       color: #fff;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* 中心卡片 */
@@ -190,6 +195,62 @@
     @media (max-width: 480px) {
       .card-header { padding: 40px 24px 24px; }
       .form-area   { padding: 32px 24px; }
+      
+      /* 价格区域优化 */
+      .price {
+        margin-top: 8px;
+        gap: 6px;
+      }
+      .price-val {
+        font-size: 2.2rem;
+      }
+      .price-tag {
+        font-size: 0.75rem;
+        padding: 3px 8px;
+      }
+      
+      /* 按钮优化 */
+      .btn-buy {
+        margin: 20px 0 8px;
+        padding: 16px 0;
+        font-size: 1.05rem;
+      }
+      
+      /* 步骤优化 */
+      .steps-mini {
+        gap: 6px 8px;
+        margin: 8px 0 6px;
+      }
+      .step-pill {
+        font-size: 0.75rem;
+        padding: 5px 8px;
+      }
+      .steps-link {
+        font-size: 0.75rem;
+        margin-left: 4px;
+      }
+      
+      /* 徽章优化 */
+      .badges {
+        gap: 8px;
+        margin-top: 16px;
+      }
+      .badge {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+      }
+      
+      /* 统计优化 */
+      .stats {
+        gap: 16px;
+        margin: 24px 0 8px;
+      }
+      .stat-value {
+        font-size: 0.9rem;
+      }
+      .stat-label {
+        font-size: 0.7rem;
+      }
     }
   
   /* ======== 价格 + CTA ======== */
@@ -487,26 +548,61 @@
     .cs-fab {
       bottom: 80px !important;
     }
+    
+    /* 成本通知移动端优化 */
     .cost-notice {
       padding: 16px 18px;
       margin: 16px 0;
       gap: 12px;
+      flex-direction: column;
+      text-align: center;
+    }
+    .cost-notice-icon {
+      font-size: 1.8rem;
+      margin: 0 auto 8px;
+    }
+    .cost-notice-content {
+      width: 100%;
     }
     .cost-notice-title {
       font-size: 1rem;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .cost-notice-main {
+      gap: 10px;
     }
     .cost-notice-item {
       font-size: 0.9rem;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+      padding: 8px 0;
+    }
+    .cost-notice-label {
+      min-width: 70px;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+  }
+  
+  /* 超小屏幕优化 */
+  @media (max-width: 375px) {
+    .cost-notice {
+      padding: 14px 16px;
+      margin: 12px 0;
+    }
+    .cost-notice-item {
+      font-size: 0.85rem;
       flex-direction: column;
+      align-items: flex-start;
       gap: 4px;
+      padding: 6px 0;
     }
     .cost-notice-label {
       min-width: auto;
-      font-size: 0.85rem;
-    }
-    .cost-notice-icon {
-      font-size: 1.6rem;
+      font-size: 0.8rem;
     }
   }
 
