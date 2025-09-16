@@ -428,6 +428,137 @@
     }
   }
 
+  /* 库存缺货弹窗样式 */
+  .stock-modal-mask {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+  }
+  .stock-modal-mask.show {
+    display: flex;
+  }
+  .stock-modal {
+    width: min(90vw, 480px);
+    background: #fff;
+    color: #111;
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    animation: stockModalSlideIn 0.3s ease-out;
+  }
+  @keyframes stockModalSlideIn {
+    from {
+      transform: translateY(-20px) scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+  .stock-modal-header {
+    background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+    color: #fff;
+    padding: 20px 24px;
+    text-align: center;
+    position: relative;
+  }
+  .stock-modal-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .stock-modal-body {
+    padding: 24px;
+    text-align: center;
+  }
+  .stock-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .stock-message {
+    font-size: 1.1rem;
+    color: #374151;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .stock-notice {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #f59e0b;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+  .stock-wechat {
+    background: #f0f9ff;
+    color: #1e40af;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #3b82f6;
+    margin-bottom: 24px;
+  }
+  .stock-wechat-label {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .stock-wechat-id {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .stock-countdown {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #dc2626;
+    margin-bottom: 20px;
+  }
+  .stock-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  .stock-btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    min-width: 100px;
+  }
+  .stock-btn-primary {
+    background: #3b82f6;
+    color: #fff;
+  }
+  .stock-btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+  }
+  .stock-btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+  }
+  .stock-btn-secondary:hover {
+    background: #e5e7eb;
+  }
+  .stock-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    pointer-events: none;
+  }
+
 </style>
 </head>
 
@@ -542,8 +673,86 @@
       window.location.href = `chongzhi.pro`;
     }
 
-    document.getElementById('buyBtn')?.addEventListener('click', function () {
+    // 库存缺货弹窗功能
+    let stockCountdownTimer = null;
+    let stockCountdownValue = 9;
+    
+    function showStockModal() {
+      const mask = document.getElementById('stockModalMask');
+      const confirmBtn = document.getElementById('stockConfirmBtn');
+      const countdownNumber = document.getElementById('countdownNumber');
+      
+      // 重置倒计时
+      stockCountdownValue = 9;
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = `确定继续 (${stockCountdownValue})`;
+      countdownNumber.textContent = stockCountdownValue;
+      
+      // 显示弹窗
+      mask.classList.add('show');
+      mask.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      
+      // 开始倒计时
+      stockCountdownTimer = setInterval(() => {
+        stockCountdownValue--;
+        confirmBtn.textContent = `确定继续 (${stockCountdownValue})`;
+        countdownNumber.textContent = stockCountdownValue;
+        
+        if (stockCountdownValue <= 0) {
+          clearInterval(stockCountdownTimer);
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = '确定继续';
+          countdownNumber.textContent = '0';
+          // 确保按钮可以点击
+          confirmBtn.style.pointerEvents = 'auto';
+          confirmBtn.style.cursor = 'pointer';
+          confirmBtn.style.opacity = '1';
+          console.log('按钮已启用，可以点击');
+        }
+      }, 1000);
+    }
+    
+    function hideStockModal() {
+      const mask = document.getElementById('stockModalMask');
+      mask.classList.remove('show');
+      mask.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      
+      if (stockCountdownTimer) {
+        clearInterval(stockCountdownTimer);
+        stockCountdownTimer = null;
+      }
+    }
+    
+    function proceedToPurchase() {
+      hideStockModal();
       window.open('https://1c.i6ls.com//details/9AC78762', '_blank');
+    }
+    
+    // 库存弹窗事件监听
+    document.getElementById('stockCancelBtn')?.addEventListener('click', hideStockModal);
+    
+    // 确定按钮点击事件
+    const confirmBtn = document.getElementById('stockConfirmBtn');
+    confirmBtn?.addEventListener('click', function(e) {
+      console.log('确定按钮被点击，disabled状态:', this.disabled);
+      if (!this.disabled) {
+        console.log('执行跳转');
+        proceedToPurchase();
+      } else {
+        console.log('按钮仍被禁用，无法跳转');
+      }
+    });
+    
+    document.getElementById('stockModalMask')?.addEventListener('click', function(e) {
+      if (e.target === this) {
+        hideStockModal();
+      }
+    });
+
+    document.getElementById('buyBtn')?.addEventListener('click', function () {
+      showStockModal();
     });
 
     const fab = document.getElementById('csFab');
@@ -585,6 +794,39 @@
 
   <!-- 移动端底部浮窗 CTA -->
   <a href="https://1c.i6ls.com//details/9AC78762" target="_blank" class="cta-sticky" role="button" aria-label="¥169 立即购买">¥169 立即购买</a>
+
+  <!-- 库存缺货弹窗 -->
+  <div class="stock-modal-mask" id="stockModalMask" aria-hidden="true">
+    <div class="stock-modal">
+      <div class="stock-modal-header">
+        <h3>⚠️ 库存告急</h3>
+      </div>
+      <div class="stock-modal-body">
+        <span class="stock-icon">📦</span>
+        <div class="stock-message">
+          当前库存暂时缺货，我们正在紧急补货中<br>
+          预计恢复时间请关注下方客服通知
+        </div>
+        <div class="stock-notice">
+          <strong>📢 重要通知：</strong><br>
+          恢复时间和最新价格信息<br>
+          请添加客服微信获取第一手消息
+        </div>
+        <div class="stock-wechat">
+          <div class="stock-wechat-label">💬 客服微信</div>
+          <div class="stock-wechat-id" id="stockWechatId">Jiage01888</div>
+          <button class="copy" onclick="copyText('stockWechatId')" style="font-size: 0.8rem; padding: 4px 8px; border-radius: 6px; border: 1px solid #3b82f6; background: #fff; color: #3b82f6; cursor: pointer;">复制</button>
+        </div>
+        <div class="stock-countdown" id="stockCountdown">
+          请等待 <span id="countdownNumber">9</span> 秒后确定继续
+        </div>
+        <div class="stock-buttons">
+          <button class="stock-btn stock-btn-secondary" id="stockCancelBtn">取消</button>
+          <button class="stock-btn stock-btn-primary" id="stockConfirmBtn" disabled>确定继续 (9)</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="flow-mask" id="flowMask" aria-hidden="true">
     <div class="flow-modal">
       <div class="flow-head">
