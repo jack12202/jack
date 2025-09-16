@@ -708,7 +708,11 @@
           confirmBtn.style.pointerEvents = 'auto';
           confirmBtn.style.cursor = 'pointer';
           confirmBtn.style.opacity = '1';
+          // 移除disabled类
+          confirmBtn.classList.remove('disabled');
           console.log('按钮已启用，可以点击');
+          console.log('按钮元素:', confirmBtn);
+          console.log('按钮disabled属性:', confirmBtn.disabled);
         }
       }, 1000);
     }
@@ -730,29 +734,46 @@
       window.open('https://1c.i6ls.com//details/9AC78762', '_blank');
     }
     
-    // 库存弹窗事件监听
-    document.getElementById('stockCancelBtn')?.addEventListener('click', hideStockModal);
-    
-    // 确定按钮点击事件
-    const confirmBtn = document.getElementById('stockConfirmBtn');
-    confirmBtn?.addEventListener('click', function(e) {
-      console.log('确定按钮被点击，disabled状态:', this.disabled);
-      if (!this.disabled) {
-        console.log('执行跳转');
+    // 全局函数，用于onclick属性
+    function handleConfirmClick() {
+      const confirmBtn = document.getElementById('stockConfirmBtn');
+      console.log('handleConfirmClick被调用，disabled状态:', confirmBtn.disabled);
+      if (!confirmBtn.disabled) {
         proceedToPurchase();
       } else {
-        console.log('按钮仍被禁用，无法跳转');
+        console.log('按钮仍被禁用');
       }
-    });
+    }
     
-    document.getElementById('stockModalMask')?.addEventListener('click', function(e) {
-      if (e.target === this) {
-        hideStockModal();
+    // 等待DOM加载完成后绑定事件
+    document.addEventListener('DOMContentLoaded', function() {
+      // 库存弹窗事件监听
+      document.getElementById('stockCancelBtn')?.addEventListener('click', hideStockModal);
+      
+      // 确定按钮点击事件
+      const confirmBtn = document.getElementById('stockConfirmBtn');
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', function(e) {
+          console.log('确定按钮被点击，disabled状态:', this.disabled);
+          if (!this.disabled) {
+            console.log('执行跳转');
+            proceedToPurchase();
+          } else {
+            console.log('按钮仍被禁用，无法跳转');
+          }
+        });
       }
-    });
+      
+      document.getElementById('stockModalMask')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+          hideStockModal();
+        }
+      });
 
-    document.getElementById('buyBtn')?.addEventListener('click', function () {
-      showStockModal();
+      // 购买按钮事件绑定
+      document.getElementById('buyBtn')?.addEventListener('click', function () {
+        showStockModal();
+      });
     });
 
     const fab = document.getElementById('csFab');
@@ -822,7 +843,7 @@
         </div>
         <div class="stock-buttons">
           <button class="stock-btn stock-btn-secondary" id="stockCancelBtn">取消</button>
-          <button class="stock-btn stock-btn-primary" id="stockConfirmBtn" disabled>确定继续 (9)</button>
+          <button class="stock-btn stock-btn-primary" id="stockConfirmBtn" disabled onclick="handleConfirmClick()">确定继续 (9)</button>
         </div>
       </div>
     </div>
