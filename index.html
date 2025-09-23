@@ -1171,13 +1171,6 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
 
       <div class="rg-actions">
         <button class="rg-btn rg-btn-primary" id="rgOpen">打开充值网站</button>
-        <button class="rg-btn rg-btn-ghost" id="rgCopyURL">复制充值网址</button>
-      </div>
-
-      <p class="rg-hint">打不开？复制以下链接到浏览器：</p>
-      <div class="rg-copyline">
-        <span class="rg-url" id="rgURLText">https://chongzhi.pro</span>
-        <button class="rg-btn rg-btn-ghost" id="rgCopyLine">复制</button>
       </div>
     </div>
   </div>
@@ -1299,9 +1292,6 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
   var card  = modal ? modal.querySelector('.rg-card') : null;
   var closeBtn = $('#rgClose');
   var btnOpen  = $('#rgOpen');
-  var btnCopy  = $('#rgCopyURL');
-  var btnCopy2 = $('#rgCopyLine');
-  var urlText  = $('#rgURLText');
   var lastFocus = null;
 
   // 打开/关闭
@@ -1324,14 +1314,9 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
 
   if(btnOpen){
     btnOpen.addEventListener('click', function(){
-      // 打开前复制一句提示（可删）
-      var tip = '请在打开的页面填写你从发卡网获取的卡密，约 5 分钟到账。';
-      copyText(tip).finally(function(){ window.open(RG_URL, '_blank', 'noopener'); });
+      window.open(RG_URL, '_blank', 'noopener');
     });
   }
-  if(btnCopy){ btnCopy.addEventListener('click', function(){ copyText(RG_URL); }); }
-  if(btnCopy2){ btnCopy2.addEventListener('click', function(){ copyText(RG_URL); }); }
-  if(urlText){ urlText.textContent = RG_URL; }
 
   // 暴露全局函数，供你在现有按钮/链接上直接调用
   window.openRechargeGuide = openRechargeGuide;
