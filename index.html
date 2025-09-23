@@ -787,10 +787,21 @@ body.modal-open{ overflow:hidden; }
 .flow-steps{ padding-left:1.2rem; margin:.2rem 0 1rem }
 .hint{ opacity:.8; }
 
+/* 弹窗内按钮容器：增加间距 */
+.modal-footer{
+  display:flex; gap:1rem; align-items:center; flex-wrap:wrap;
+}
+
 /* 弹窗内按钮：统一描边 */
-.modal-footer .cta-mini, .modal-footer .cta-outline{
+.modal-footer .cta-mini{
   all:unset; cursor:pointer; font-weight:700; padding:.42rem .75rem; border-radius:10px;
   border:1px solid rgba(255,255,255,.65); color:#fff;
+}
+/* 弹窗内购买按钮：橙色样式（与立即购买按钮一致） */
+.modal-footer .cta-outline{
+  all:unset; cursor:pointer; font-weight:700; padding:.42rem .75rem; border-radius:10px;
+  background: linear-gradient(180deg, #ffb457 0%, #f97316 100%);
+  color:#fff;
 }
 
 @media (max-width:480px){ .modal-close{ transform:translate(300px,-10px);} }
@@ -814,6 +825,30 @@ a#openWhyTop:hover{ color:#fff; }
 .rg-url{user-select:all;word-break:break-all}
 .rg-hint{opacity:.8;font-size:.9rem}
 @media (max-width:480px){ .rg-close{ transform:translate(260px,-10px);} }
+
+/* === 官方通知弹窗（proof-） === */
+.proof-mask{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:120;padding:16px;}
+.proof-mask.show{display:flex;}
+.proof-card{width:min(860px,96vw);max-height:90vh;overflow:auto;background:#0b1220;color:rgba(255,255,255,.88);
+  border-radius:16px;padding:20px 20px 18px;border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 60px rgba(0,0,0,.45);outline:0;}
+.proof-close{position:sticky;top:-8px;float:right;background:#111827;color:#fff;border:none;padding:.38rem .6rem;border-radius:8px;cursor:pointer;}
+.proof-title{margin:.2rem 0 1rem;font-size:1.15rem;font-weight:800;}
+.proof-sec{margin:.75rem 0;}
+.proof-sec h4{margin:.25rem 0 .4rem;font-size:1.02rem;}
+.proof-list{margin:.35rem 0 .2rem;padding-left:1rem;}
+.proof-list li{margin:.3rem 0;}
+.proof-actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:1rem 0 .2rem;}
+.proof-btn{all:unset;cursor:pointer;padding:.55rem .9rem;border-radius:10px;font-weight:800;}
+.proof-btn-ghost{border:1px solid rgba(255,255,255,.65);color:#fff;}
+.proof-btn-primary{background:linear-gradient(180deg,#ffb457 0%,#f97316 100%);color:#fff;} /* 与站内主CTA保持一致，仅此处橙色 */
+.proof-hint{opacity:.82;}
+.proof-imgwrap{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:130;display:none;background:rgba(0,0,0,.9);padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,.2);}
+.proof-imgwrap.show{display:block;}
+.proof-img{max-width:90vw;max-height:80vh;width:auto;height:auto;border-radius:8px;}
+.proof-openlink{opacity:.9;text-decoration:underline;cursor:pointer;margin-left:.5rem;}
+/* 价格构成页签内的小链接样式（弱化） */
+#tab-price .open-proof-link{opacity:.85;text-decoration:underline;cursor:pointer;margin-left:.6rem;}
+@media (max-width:480px){ .proof-close{position:static;float:none;margin-left:auto;display:block;margin-bottom:.2rem;} }
 
 /* 统一"为什么不是更便宜"弹窗：隐藏旧入口（全部映射到新弹窗） */
 #openPriceModal, #openFlowModal, #openSupportModal, #openPolicy, #openWhy, #openFlow { display:none !important; }
@@ -1137,7 +1172,9 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
         <li>👩‍💻 人工客服与售后保障</li>
       </ul>
       <p>综合以上成本，本站价格为 <strong>¥188</strong>。若整体成本上涨，价格可能相应调整。</p>
+      <a class="open-proof-link" id="openOfficialProof">查看官方通知 / 展开说明</a>
       <div class="modal-footer">
+        <a href="#" class="cta-outline" id="modalBuyP">去购买</a>
         <button class="cta-mini" id="modalCopyWxP">复制微信：<span class="wx">Jiage01888</span></button>
       </div>
     </section>
@@ -1150,6 +1187,7 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
       </ul>
       <p class="hint">提示：若遇到账延迟，请先勿重复下单，联系人工处理。</p>
       <div class="modal-footer">
+        <a href="#" class="cta-outline" id="modalBuyF">去购买</a>
         <button class="cta-mini" id="modalCopyWxF">复制微信：<span class="wx">Jiage01888</span></button>
       </div>
     </section>
@@ -1158,6 +1196,7 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
       <p>微信：<strong class="wx">Jiage01888</strong></p>
       <p class="hint">人工在线：9:00–24:00（其他时段尽量回复）</p>
       <div class="modal-footer">
+        <a href="#" class="cta-outline" id="modalBuyS">去购买</a>
         <button class="cta-mini" id="modalCopyWxS">复制微信：<span class="wx">Jiage01888</span></button>
       </div>
     </section>
@@ -1178,6 +1217,51 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
         <button class="rg-btn rg-btn-primary" id="rgOpen">打开充值网站</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- 官方价格通知 & 合规说明（完整版） -->
+<div class="proof-mask" id="officialProof" aria-hidden="true">
+  <div class="proof-card" role="dialog" aria-labelledby="proofTitle" tabindex="-1">
+    <button class="proof-close" id="proofClose" aria-label="关闭">×</button>
+    <h3 class="proof-title" id="proofTitle">官方价格通知 & 合规说明</h3>
+
+    <!-- 官方价格通知（摘要） -->
+    <section class="proof-sec" id="proof-official">
+      <h4>官方价格通知（摘要）</h4>
+      <ul class="proof-list">
+        <li>官方订阅价 <strong>19.99 美元/月</strong>（自 <strong>2025-09-16</strong> 起分批执行）。</li>
+        <li>本站走 <strong>苹果官方通道</strong>，价格含 <strong>通道费 / 风控 / 售后</strong>。</li>
+      </ul>
+      <p>→ <strong>定价 ¥188</strong>（如整体成本上调，将同步调整）。</p>
+
+      <div class="proof-actions">
+        <button class="proof-btn proof-btn-ghost" id="toggleProofImg">查看官方通知截图</button>
+      </div>
+
+      <!-- 截图悬浮窗 -->
+      <div class="proof-imgwrap" id="proofImgWrap">
+        <img class="proof-img" id="proofImg" src="gpt 图片.png" alt="官方价格通知截图">
+      </div>
+    </section>
+
+    <!-- 关于"低汇率国家"的说明 -->
+    <section class="proof-sec" id="proof-forex">
+      <h4>关于"低汇率国家"的说明</h4>
+      <ul class="proof-list">
+        <li>低价多为 <strong>跨区礼品卡/黑卡</strong>，<strong>不稳定、风险高</strong>。</li>
+        <li>易回滚/拒付，易触发风控，售后不可控。</li>
+      </ul>
+      <p class="proof-hint">目前没有 <strong>长期可复用</strong> 的低汇率方案；我们仅提供 <strong>官方通道</strong>，含 <strong>售后与风险处置</strong>。</p>
+    </section>
+
+    <!-- 结尾 CTA -->
+    <section class="proof-sec">
+      <div class="proof-actions">
+        <button class="proof-btn proof-btn-ghost" id="proofCopyWx">复制微信：<span class="wx">Jiage01888</span></button>
+        <a class="proof-btn proof-btn-primary" id="proofGoBuy" href="#" rel="noopener">去购买</a>
+      </div>
+    </section>
   </div>
 </div>
 
@@ -1271,6 +1355,34 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
   }
   bindCopy('copyWeChat'); bindCopy('modalCopyWxP'); bindCopy('modalCopyWxF'); bindCopy('modalCopyWxS');
 
+  // 为三个页签的"去购买卡密"按钮添加跳转逻辑
+  var modalBuyP = document.getElementById('modalBuyP'); // 价格构成页签
+  var modalBuyF = document.getElementById('modalBuyF'); // 充值流程页签
+  var modalBuyS = document.getElementById('modalBuyS'); // 客服微信页签
+  
+  var buyUrl = 'https://yk.dtyuedan.cn//details/9AC78762'; // 与立即购买按钮相同的链接
+  
+  if(modalBuyP){
+    modalBuyP.addEventListener('click', function(e){
+      e.preventDefault();
+      window.open(buyUrl, '_blank', 'noopener');
+    });
+  }
+  
+  if(modalBuyF){
+    modalBuyF.addEventListener('click', function(e){
+      e.preventDefault();
+      window.open(buyUrl, '_blank', 'noopener');
+    });
+  }
+  
+  if(modalBuyS){
+    modalBuyS.addEventListener('click', function(e){
+      e.preventDefault();
+      window.open(buyUrl, '_blank', 'noopener');
+    });
+  }
+
 
   // 导出以便调试
   window.openWhy = openWhy;
@@ -1329,6 +1441,91 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
   // （可选兜底）如果页面上本来就有某个元素想触发，可给它加 data-open="rechargeGuide"
   var autoTriggers = document.querySelectorAll('[data-open="rechargeGuide"]');
   autoTriggers.forEach(function(el){ el.addEventListener('click', function(e){ e.preventDefault(); openRechargeGuide(); }); });
+})();
+</script>
+
+<script>
+(function(){
+  function $(s){ return document.querySelector(s); }
+  function copyText(t){
+    if(navigator.clipboard && navigator.clipboard.writeText){ return navigator.clipboard.writeText(t); }
+    var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(e){} document.body.removeChild(ta); return Promise.resolve();
+  }
+  function lockScroll(on){ document.body.classList[on?'add':'remove']('modal-open'); }
+
+  // 入口：价格构成页签里的 "查看官方通知 / 展开说明"
+  var openBtn = $('#openOfficialProof');
+  var modal   = $('#officialProof');
+  var card    = modal ? modal.querySelector('.proof-card') : null;
+  var closeBtn= $('#proofClose');
+  var imgWrap = $('#proofImgWrap');
+  var img     = $('#proofImg');
+  var toggleImg = $('#toggleProofImg');
+  var copyWx  = $('#proofCopyWx');
+  var goBuy   = $('#proofGoBuy');
+  var lastFocus = null;
+
+  // 请在此设置你的购买链接（使用与立即购买相同的链接）：
+  var BUY_URL = 'https://yk.dtyuedan.cn//details/9AC78762'; // 与立即购买按钮相同的链接
+  if(goBuy){ 
+    goBuy.addEventListener('click', function(e){
+      e.preventDefault();
+      window.open(BUY_URL, '_blank', 'noopener');
+    });
+  }
+
+  // 若页面已有微信号节点 #wxid，则读取；否则用按钮里的文本
+  var wxNode = document.getElementById('wxid');
+  var WX = (wxNode && (wxNode.textContent||'').trim()) || (copyWx ? (copyWx.textContent.match(/[\w-]+$/)||['Jiage01888'])[0] : 'Jiage01888');
+
+  function openProof(){
+    lastFocus = document.activeElement;
+    modal.classList.add('show'); modal.setAttribute('aria-hidden','false');
+    lockScroll(true); (card||modal).focus({preventScroll:true});
+  }
+  function closeProof(){
+    modal.classList.remove('show'); modal.setAttribute('aria-hidden','true');
+    lockScroll(false);
+    if(lastFocus && typeof lastFocus.focus==='function'){ try{ lastFocus.focus(); }catch(e){} }
+  }
+
+  if(openBtn){ openBtn.addEventListener('click', function(e){ e.preventDefault(); openProof(); }); }
+  if(closeBtn){ closeBtn.addEventListener('click', closeProof); }
+  if(modal){ modal.addEventListener('click', function(e){ if(e.target===modal) closeProof(); }); }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.classList.contains('show')) closeProof(); });
+
+  // 查看/收起截图
+  if(toggleImg){
+    toggleImg.addEventListener('click', function(){
+      if(imgWrap){ imgWrap.classList.toggle('show'); }
+    });
+  }
+  
+  // 点击截图外部区域关闭悬浮窗
+  if(imgWrap){
+    imgWrap.addEventListener('click', function(e){
+      if(e.target === imgWrap){
+        imgWrap.classList.remove('show');
+      }
+    });
+  }
+
+  // 复制微信
+  if(copyWx){
+    copyWx.addEventListener('click', function(){
+      copyText(WX).then(function(){
+        var old = copyWx.textContent;
+        copyWx.textContent = '已复制，去微信添加';
+        setTimeout(function(){ copyWx.textContent = old; }, 1600);
+        // 移动端尝试拉起微信
+        try{ if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){ setTimeout(function(){ location.href='weixin://'; }, 300); } }catch(_){}
+      });
+    });
+  }
+
+  // 导出函数（如需在别处触发）
+  window.openOfficialProof = openProof;
 })();
 </script></body>
 </html>
