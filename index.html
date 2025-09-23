@@ -793,6 +793,22 @@ body.modal-open{ overflow:hidden; }
 a#openWhyTop{ color:#c7d2fe; text-decoration:underline; }
 a#openWhyTop:hover{ color:#fff; }
 
+/* === Recharge Guide (rg-) minimal styles === */
+.rg-mask{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:999;padding:16px;}
+.rg-mask.show{display:flex;}
+.rg-card{width:min(560px,96vw);background:#0b1220;color:rgba(255,255,255,.9);border-radius:16px;padding:20px 20px 16px;border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 60px rgba(0,0,0,.4);outline:0;}
+.rg-title{margin:.2rem 0 1rem;font-size:1.1rem;font-weight:800;}
+.rg-close{position:absolute;transform:translate(500px,-10px);background:#111827;color:#fff;border:none;padding:.35rem .55rem;border-radius:8px;cursor:pointer;}
+.rg-body p{margin:.4rem 0;}
+.rg-actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:.9rem 0 .4rem;}
+.rg-btn{all:unset;cursor:pointer;padding:.55rem .9rem;border-radius:10px;font-weight:800;}
+.rg-btn-primary{background:linear-gradient(180deg,#F97316,#EA580C);color:#111;} /* 仅此处用橙色，避免破坏你的配色体系 */
+.rg-btn-ghost{border:1px solid rgba(255,255,255,.65);color:#fff;}
+.rg-copyline{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;background:rgba(255,255,255,.06);padding:.5rem .6rem;border-radius:10px;border:1px solid rgba(255,255,255,.08)}
+.rg-url{user-select:all;word-break:break-all}
+.rg-hint{opacity:.8;font-size:.9rem}
+@media (max-width:480px){ .rg-close{ transform:translate(260px,-10px);} }
+
 /* 统一"为什么不是更便宜"弹窗：隐藏旧入口（全部映射到新弹窗） */
 #openPriceModal, #openFlowModal, #openSupportModal, #openPolicy, #openWhy, #openFlow { display:none !important; }
 
@@ -981,6 +997,9 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
   <span class="note-text">📌 当前价 <strong>¥188</strong> ｜ <strong>加微信立减 ¥8</strong> ｜ 客服微信：<strong id="wxid">Jiage01888</strong></span>
   <button class="cta-mini" id="copyWeChat">复制微信</button>
   <button class="cta-outline" id="openWhyFooter">为什么不是更便宜</button>
+  <a data-open="rechargeGuide" style="opacity:.75;text-decoration:underline;margin-left:.5rem;">
+    已购买·去激活
+  </a>
 </div>
 <script>
 // 复制微信 + 弹窗逻辑
@@ -1139,6 +1158,31 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
     </section>
   </div>
 </div>
+
+<!-- 充值网站指引（不依赖外部接口） -->
+<div class="rg-mask" id="rechargeGuide" aria-hidden="true">
+  <div class="rg-card" role="dialog" aria-labelledby="rgTitle" tabindex="-1">
+    <button class="rg-close" id="rgClose" aria-label="关闭">×</button>
+    <h3 class="rg-title" id="rgTitle">充值网站指引</h3>
+
+    <div class="rg-body">
+      <p>你已在发卡网完成购买并获得卡密后，请前往充值网站，在页面中填写你的卡密即可完成激活。</p>
+      <p class="rg-hint">一般约 <strong>5 分钟</strong>到账；如有延迟，请先勿重复下单，可加微信处理。</p>
+
+      <div class="rg-actions">
+        <button class="rg-btn rg-btn-primary" id="rgOpen">打开充值网站</button>
+        <button class="rg-btn rg-btn-ghost" id="rgCopyURL">复制充值网址</button>
+      </div>
+
+      <p class="rg-hint">打不开？复制以下链接到浏览器：</p>
+      <div class="rg-copyline">
+        <span class="rg-url" id="rgURLText">https://chongzhi.pro</span>
+        <button class="rg-btn rg-btn-ghost" id="rgCopyLine">复制</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   function $(s){ return document.querySelector(s); }
@@ -1232,6 +1276,69 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
 
   // 导出以便调试
   window.openWhy = openWhy;
+})();
+</script>
+
+<script>
+(function(){
+  // 常量：充值网址（可按需改）
+  var RG_URL = (["https://","chongzhi",".","pro"].join(""));
+
+  // 工具
+  function $(s){ return document.querySelector(s); }
+  function copyText(t){
+    if(navigator.clipboard && navigator.clipboard.writeText){ return navigator.clipboard.writeText(t); }
+    var ta = document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta); return Promise.resolve();
+  }
+  function lockScroll(on){ document.body.classList[on?'add':'remove']('modal-open'); } // 不改变你站点样式，仅控制滚动
+
+  // 元素
+  var modal = $('#rechargeGuide');
+  var card  = modal ? modal.querySelector('.rg-card') : null;
+  var closeBtn = $('#rgClose');
+  var btnOpen  = $('#rgOpen');
+  var btnCopy  = $('#rgCopyURL');
+  var btnCopy2 = $('#rgCopyLine');
+  var urlText  = $('#rgURLText');
+  var lastFocus = null;
+
+  // 打开/关闭
+  function openRechargeGuide(){
+    lastFocus = document.activeElement;
+    modal.classList.add('show'); modal.setAttribute('aria-hidden','false');
+    lockScroll(true);
+    (card||modal).focus({preventScroll:true});
+  }
+  function closeRechargeGuide(){
+    modal.classList.remove('show'); modal.setAttribute('aria-hidden','true');
+    lockScroll(false);
+    if(lastFocus && typeof lastFocus.focus==='function'){ try{ lastFocus.focus(); }catch(e){} }
+  }
+
+  // 事件
+  if(closeBtn) closeBtn.addEventListener('click', closeRechargeGuide);
+  if(modal) modal.addEventListener('click', function(e){ if(e.target===modal) closeRechargeGuide(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.classList.contains('show')) closeRechargeGuide(); });
+
+  if(btnOpen){
+    btnOpen.addEventListener('click', function(){
+      // 打开前复制一句提示（可删）
+      var tip = '请在打开的页面填写你从发卡网获取的卡密，约 5 分钟到账。';
+      copyText(tip).finally(function(){ window.open(RG_URL, '_blank', 'noopener'); });
+    });
+  }
+  if(btnCopy){ btnCopy.addEventListener('click', function(){ copyText(RG_URL); }); }
+  if(btnCopy2){ btnCopy2.addEventListener('click', function(){ copyText(RG_URL); }); }
+  if(urlText){ urlText.textContent = RG_URL; }
+
+  // 暴露全局函数，供你在现有按钮/链接上直接调用
+  window.openRechargeGuide = openRechargeGuide;
+
+  // （可选兜底）如果页面上本来就有某个元素想触发，可给它加 data-open="rechargeGuide"
+  var autoTriggers = document.querySelectorAll('[data-open="rechargeGuide"]');
+  autoTriggers.forEach(function(el){ el.addEventListener('click', function(e){ e.preventDefault(); openRechargeGuide(); }); });
 })();
 </script></body>
 </html>
