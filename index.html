@@ -79,8 +79,8 @@
       gap: 12px;
     }
       .badge {
-    padding: 4px 12px;
-    font-size: 0.75rem;
+    padding: 4px 8px;
+    font-size: 0.7rem;
     font-weight: 600;
     border-radius: 9999px;
     background: var(--white-85);
@@ -90,8 +90,9 @@
     align-items: center;
     gap: 4px;
     box-shadow: none;
-    min-width: 80px;
+    width: 95px;
     justify-content: center;
+    white-space: nowrap;
   }
   .badge.clickable {
     background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
@@ -385,7 +386,9 @@
     padding:6px 10px; border-radius:9999px;
     background: var(--white-85); border:1px solid var(--surface-glass);
     box-shadow: none;
-    min-width: 80px; text-align: center;
+    width: 95px; text-align: center;
+    display: inline-block;
+    white-space: nowrap;
   }
   .steps-link{
     margin-left:6px; font-size:.78rem; color:#c7d2fe; text-decoration:underline;
@@ -421,7 +424,7 @@
     margin: 16px 0;
     box-shadow: none;
   }
-  /* —— 优化对齐：垂直左对齐列表 —— */
+  /* —— 优化对齐：文字左对齐，椭圆按钮对齐 —— */
   .buy-notes {
     list-style: none;
     padding: 0;
