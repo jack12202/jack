@@ -869,7 +869,7 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
 <!-- 顶部 -->
 <header class="card-header">
 <h1>GPT Plus 安全充值</h1>
-<div class="notice-bar-top">📢 当前价 ¥188 ｜ 加微信立减 ¥8 ｜ 官方通道更稳</div>
+<div class="notice-bar-top">📢 当前价 ¥188 ｜ 官方通道更稳</div>
 <!-- 成本暴涨通知 -->
 <div class="cost-notice">
 <div class="cost-notice-icon">📢</div>
@@ -888,10 +888,6 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
 <span class="cost-notice-label">📈 后续趋势：</span>
               价格可能继续上涨，详情咨询微信
             </div>
-<div class="cost-notice-item">
-<span class="cost-notice-label">🎁 微信专享：</span>
-              加微信立减 <strong>¥8</strong>
-</div>
 <div class="cost-notice-item">
 <span class="cost-notice-label">💬 人工微信：</span>
 <strong id="wechatId">Jiage01888</strong>
@@ -986,7 +982,9 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
     }
 
     document.getElementById('buyBtn')?.addEventListener('click', function () {
-      window.open('https://yk.dtyuedan.cn//details/9AC78762', '_blank');
+      // 显示缺货弹窗
+      document.getElementById('outOfStockModal').classList.add('show');
+      document.body.classList.add('modal-open');
     });
 
     const drawer = document.getElementById('csDrawer');
@@ -1019,7 +1017,7 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
     window.copyText = copyText;
   </script>
 <!-- 移动端底部浮窗 CTA -->
-<a aria-label="¥188 立即购买" class="cta-sticky" href="https://yk.dtyuedan.cn//details/9AC78762" role="button" target="_blank">¥188 立即购买</a>
+<a aria-label="¥188 立即购买" class="cta-sticky" href="#" role="button" id="mobileBuyBtn">¥188 立即购买</a>
 <script>
     const openFlow = document.getElementById('openFlow');
     const flowMask = document.getElementById('flowMask');
@@ -1040,10 +1038,10 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
     });
   </script>
 <div class="sticky-note" id="bottomNote">
-  <span class="note-text">📌 当前价 <strong>¥188</strong> ｜ <strong>加微信立减 ¥8</strong> ｜ 客服微信：<strong id="wxid">Jiage01888</strong></span>
+  <span class="note-text">📌 当前价 <strong>¥188</strong> ｜ 客服微信：<strong id="wxid">Jiage01888</strong></span>
   <button class="cta-mini" id="copyWeChat">复制微信</button>
   <button class="cta-outline" id="openWhyFooter">为什么不是更便宜</button>
-  <a data-open="rechargeGuide" style="opacity:.75;text-decoration:underline;margin-left:.5rem;">
+  <a data-open="rechargeGuide" style="opacity:.75;text-decoration:underline;margin-left:.5rem;display:none;">
     已购买·去激活
   </a>
 </div>
@@ -1222,6 +1220,38 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
       <div class="rg-actions">
         <button class="rg-btn rg-btn-primary" id="rgOpen">打开充值网站</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- 缺货公告弹窗 -->
+<div class="modal-mask" id="outOfStockModal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-labelledby="outOfStockTitle" tabindex="-1">
+    <button class="modal-close" id="outOfStockClose" aria-label="关闭">×</button>
+    <h3 id="outOfStockTitle" style="margin:.2rem 0 1rem">⚠️ 系统缺货通知</h3>
+    
+    <div style="text-align: center; margin: 20px 0;">
+      <div style="font-size: 3rem; margin-bottom: 16px;">📦</div>
+      <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px;">
+        很抱歉，目前全网充值系统缺货，无法自动充值。
+      </p>
+      <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 24px; color: #e5e7eb;">
+        为了不影响您的使用，我们提供<strong style="color: #f97316;">人工手动代充</strong>服务。
+      </p>
+    </div>
+    
+    <div style="background: var(--brand-glass); border: 1px solid var(--surface-glass); border-radius: 12px; padding: 16px; margin: 20px 0;">
+      <p style="margin: 0; font-weight: 600; text-align: center;">
+        💬 请添加微信：<strong style="color: #f97316;">Jiage01888</strong>
+      </p>
+      <p style="margin: 8px 0 0; font-size: 0.9rem; text-align: center; opacity: 0.8;">
+        人工在线：9:00–24:00
+      </p>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="cta-mini" id="copyWeChatOutOfStock">复制微信</button>
+      <button class="cta-outline" id="closeOutOfStockModal">我知道了</button>
     </div>
   </div>
 </div>
@@ -1542,6 +1572,71 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
 
   // 导出函数（如需在别处触发）
   window.openOfficialProof = openProof;
+})();
+</script>
+
+<!-- 缺货弹窗逻辑 -->
+<script>
+(function(){
+  function $(s){ return document.querySelector(s); }
+  function copyText(t){
+    if(navigator.clipboard && navigator.clipboard.writeText){ return navigator.clipboard.writeText(t); }
+    var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(e){} document.body.removeChild(ta); return Promise.resolve();
+  }
+  function lockScroll(on){ document.body.classList[on?'add':'remove']('modal-open'); }
+
+  var modal = $('#outOfStockModal');
+  var card = modal ? modal.querySelector('.modal-card') : null;
+  var closeBtn = $('#outOfStockClose');
+  var copyBtn = $('#copyWeChatOutOfStock');
+  var closeBtn2 = $('#closeOutOfStockModal');
+  var mobileBuyBtn = $('#mobileBuyBtn');
+  var lastFocus = null;
+  var WX = 'Jiage01888';
+
+  function openOutOfStockModal(){
+    lastFocus = document.activeElement;
+    modal.classList.add('show'); modal.setAttribute('aria-hidden','false');
+    lockScroll(true);
+    (card||modal).focus({preventScroll:true});
+  }
+  
+  function closeOutOfStockModal(){
+    modal.classList.remove('show'); modal.setAttribute('aria-hidden','true');
+    lockScroll(false);
+    if(lastFocus && typeof lastFocus.focus==='function'){ try{ lastFocus.focus(); }catch(e){} }
+  }
+
+  // 关闭按钮事件
+  if(closeBtn) closeBtn.addEventListener('click', closeOutOfStockModal);
+  if(closeBtn2) closeBtn2.addEventListener('click', closeOutOfStockModal);
+  if(modal) modal.addEventListener('click', function(e){ if(e.target===modal) closeOutOfStockModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.classList.contains('show')) closeOutOfStockModal(); });
+
+  // 复制微信按钮
+  if(copyBtn){
+    copyBtn.addEventListener('click', function(){
+      copyText(WX).then(function(){
+        var old = copyBtn.textContent;
+        copyBtn.textContent = '已复制';
+        setTimeout(function(){ copyBtn.textContent = old; }, 1600);
+        // 移动端尝试拉起微信
+        try{ if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){ setTimeout(function(){ location.href='weixin://'; }, 300); } }catch(_){}
+      });
+    });
+  }
+
+  // 移动端购买按钮事件
+  if(mobileBuyBtn){
+    mobileBuyBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      openOutOfStockModal();
+    });
+  }
+
+  // 导出函数
+  window.openOutOfStockModal = openOutOfStockModal;
 })();
 </script></body>
 </html>
