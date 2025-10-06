@@ -1018,9 +1018,8 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
     }
 
     document.getElementById('buyBtn')?.addEventListener('click', function () {
-      // 显示缺货弹窗
-      document.getElementById('outOfStockModal').classList.add('show');
-      document.body.classList.add('modal-open');
+      // 改为新窗口打开购买链接
+      window.open('https://qf.dtyuedan.cn/item/zu0q6z', '_blank', 'noopener');
     });
 
     const drawer = document.getElementById('csDrawer');
@@ -1438,21 +1437,21 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
   if(modalBuyP){
     modalBuyP.addEventListener('click', function(e){
       e.preventDefault();
-      if(window.openOutOfStockModal){ window.openOutOfStockModal(); }
+      window.open('https://qf.dtyuedan.cn/item/zu0q6z', '_blank', 'noopener');
     });
   }
   
   if(modalBuyF){
     modalBuyF.addEventListener('click', function(e){
       e.preventDefault();
-      if(window.openOutOfStockModal){ window.openOutOfStockModal(); }
+      window.open('https://qf.dtyuedan.cn/item/zu0q6z', '_blank', 'noopener');
     });
   }
   
   if(modalBuyS){
     modalBuyS.addEventListener('click', function(e){
       e.preventDefault();
-      if(window.openOutOfStockModal){ window.openOutOfStockModal(); }
+      window.open('https://qf.dtyuedan.cn/item/zu0q6z', '_blank', 'noopener');
     });
   }
 
@@ -1540,11 +1539,11 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
   var lastFocus = null;
 
   // 请在此设置你的购买链接（使用与立即购买相同的链接）：
-  var BUY_URL = 'https://yk.dtyuedan.cn//details/9AC78762'; // 与立即购买按钮相同的链接
+  var BUY_URL = 'https://qf.dtyuedan.cn/item/zu0q6z';
   if(goBuy){ 
     goBuy.addEventListener('click', function(e){
       e.preventDefault();
-      if(window.openOutOfStockModal){ window.openOutOfStockModal(); }
+      window.open(BUY_URL, '_blank', 'noopener');
     });
   }
 
@@ -1667,7 +1666,7 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
   if(mobileBuyBtn){
     mobileBuyBtn.addEventListener('click', function(e){
       e.preventDefault();
-      openOutOfStockModal();
+      window.open('https://qf.dtyuedan.cn/item/zu0q6z', '_blank', 'noopener');
     });
   }
 
