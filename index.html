@@ -258,9 +258,15 @@
         padding: 3px 8px;
       }
       
-      /* 按钮优化 */
-      .btn-buy {
+      /* 按钮组移动端优化 */
+      .button-group {
+        flex-direction: column;
+        gap: 8px;
         margin: 20px 0 8px;
+      }
+      .button-group .btn-buy,
+      .button-group .btn-recharge {
+        margin: 0;
         padding: 16px 0;
         font-size: 1.05rem;
       }
@@ -344,6 +350,55 @@
   .btn-buy:hover{ filter: brightness(1.05); transform: translateY(-2px); }
   .btn-buy:active{ transform: translateY(0); }
   .btn-buy:focus-visible{ outline: 3px solid var(--brand-500); outline-offset: 2px; }
+
+  /* 按钮组布局 */
+  .button-group{
+    display: flex;
+    gap: 12px;
+    margin: 22px 0 8px;
+  }
+  .button-group .btn-buy{
+    flex: 1.2;
+    margin: 0;
+  }
+  .button-group .btn-recharge{
+    flex: 1;
+    margin: 0;
+  }
+
+  /* 购买说明文字 */
+  .buy-note{
+    margin: 8px 0 4px;
+    text-align: center;
+    font-size: .85rem;
+    color: rgba(255,255,255,.85);
+    opacity: .9;
+  }
+
+  /* 进入充值系统按钮 */
+  .btn-recharge{
+    width:100%;
+    margin: 16px 0 6px;
+    padding: 14px 0;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    color: #fff;
+    background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, rgba(255,255,255,.08) 100%);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all .2s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .btn-recharge:hover{ 
+    background: linear-gradient(135deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.12) 100%);
+    border-color: rgba(255,255,255,.35);
+    transform: translateY(-1px);
+  }
+  .btn-recharge:active{ transform: translateY(0); }
+  .btn-recharge:focus-visible{ outline: 2px solid rgba(255,255,255,.5); outline-offset: 2px; }
 
   /* —— 说明文字 —— */
   .note-weak{
@@ -862,6 +917,30 @@ a#openWhyTop:hover{ color:#fff; }
 .rg-hint{opacity:.8;font-size:.9rem}
 @media (max-width:480px){ .rg-close{ transform:translate(260px,-10px);} }
 
+/* === 充值系统选择弹窗 (rs-) === */
+.rs-mask{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:999;padding:16px;}
+.rs-mask.show{display:flex;}
+.rs-card{width:min(520px,96vw);background:linear-gradient(180deg, rgba(10,36,48,.92), rgba(9,30,40,.92));color:#e6f7fb;border-radius:16px;padding:20px 20px 16px;border:1px solid rgba(31,182,207,.35);box-shadow:0 20px 60px rgba(0,0,0,.35);outline:0; backdrop-filter: blur(8px) saturate(120%); -webkit-backdrop-filter: blur(8px) saturate(120%); position:relative;}
+.rs-card::after{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; padding:1px; mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; background: linear-gradient(135deg, rgba(31,182,207,.85), rgba(20,184,166,.75), rgba(56,189,248,.75)); }
+.rs-title{margin:.2rem 0 1rem;font-size:1.1rem;font-weight:800;text-align:center;}
+.rs-close{position:absolute;transform:translate(470px,-10px);background:#111827;color:#fff;border:none;padding:.35rem .55rem;border-radius:8px;cursor:pointer;}
+.rs-body p{margin:.4rem 0;text-align:center;}
+.rs-options{display:flex;gap:12px;margin:16px 0;}
+.rs-option{flex:1;padding:16px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:12px;cursor:pointer;transition:all .2s ease;text-align:center;}
+.rs-option:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);transform:translateY(-2px);}
+.rs-option-title{font-weight:700;margin-bottom:6px;color:#fff;}
+.rs-option-desc{font-size:.85rem;opacity:.8;margin-bottom:8px;}
+.rs-option-url{font-size:.8rem;color:var(--brand-500);word-break:break-all;}
+.rs-actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:.9rem 0 .4rem;justify-content:center;}
+.rs-btn{all:unset;cursor:pointer;padding:.55rem .9rem;border-radius:10px;font-weight:800;}
+.rs-btn-primary{background:linear-gradient(180deg,var(--brand-600),var(--brand-500));color:#fff;}
+.rs-btn-ghost{border:1px solid rgba(255,255,255,.65);color:#fff;}
+@media (max-width:480px){ 
+  .rs-close{ transform:translate(260px,-10px);} 
+  .rs-options{ flex-direction:column; gap:8px; }
+  .rs-option{ padding:12px 8px; }
+}
+
 /* === 官方通知弹窗（proof-） === */
 .proof-mask{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:120;padding:16px;}
 .proof-mask.show{display:flex;}
@@ -937,7 +1016,14 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
 <span class="price-val">¥188</span>
 <span class="price-tag">月付·标准版</span>
 </div>
-<button aria-label="立即购买卡密" class="btn-buy" id="buyBtn">🛒 立即购买 (¥188)</button><a href="#" id="openWhyTop">为什么不是更便宜</a><p class="small-risk">⚠ 警惕低价黑卡，避免封号风险</p>
+<!-- 购买和充值按钮组 -->
+<div class="button-group">
+  <button aria-label="立即购买卡密" class="btn-buy" id="buyBtn">🛒 立即购买 (¥188)</button>
+  <button class="btn-recharge" id="rechargeBtn">💳 进入自动充值系统</button>
+</div>
+<div class="buy-note">充值步骤：购买卡密 → 进入自动充值系统充值</div>
+<a href="#" id="openWhyTop">为什么不是更便宜</a>
+<p class="small-risk">⚠ 警惕低价黑卡，避免封号风险</p>
 <div class="steps-mini">
 <span class="step-pill">1 下单卡密</span>
 <span class="step-pill">2 提交账号</span>
@@ -1254,6 +1340,39 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
 
       <div class="rg-actions">
         <button class="rg-btn rg-btn-primary" id="rgOpen">打开充值网站</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 充值系统选择弹窗 -->
+<div class="rs-mask" id="rechargeSystemModal" aria-hidden="true">
+  <div class="rs-card" role="dialog" aria-labelledby="rsTitle" tabindex="-1">
+    <button class="rs-close" id="rsClose" aria-label="关闭">×</button>
+    <h3 class="rs-title" id="rsTitle">选择充值网站激活</h3>
+
+    <div class="rs-body">
+      <p>说明：</p>
+      <ul style="margin: 8px 0; padding-left: 20px; line-height: 1.6;">
+        <li>购买了自动充值1卡密 → 进入网站1激活</li>
+        <li>购买了自动充值2卡密 → 进入网站2激活</li>
+      </ul>
+      
+      <div class="rs-options">
+        <div class="rs-option" data-url="https://www.ow521.com">
+          <div class="rs-option-title">自动充值1</div>
+          <div class="rs-option-desc">点击进入激活网站</div>
+          <div class="rs-option-url">www.ow521.com</div>
+        </div>
+        <div class="rs-option" data-url="https://www.987ai.vip">
+          <div class="rs-option-title">自动充值2</div>
+          <div class="rs-option-desc">点击进入激活网站</div>
+          <div class="rs-option-url">www.987ai.vip</div>
+        </div>
+      </div>
+      
+      <div class="rs-actions">
+        <button class="rs-btn rs-btn-ghost" id="rsCancel">取消</button>
       </div>
     </div>
   </div>
@@ -1672,6 +1791,66 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
 
   // 导出函数
   window.openOutOfStockModal = openOutOfStockModal;
+})();
+</script>
+
+<!-- 充值系统选择弹窗逻辑 -->
+<script>
+(function(){
+  function $(s){ return document.querySelector(s); }
+  function $all(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
+  function lockScroll(on){ document.body.classList[on?'add':'remove']('modal-open'); }
+
+  var modal = $('#rechargeSystemModal');
+  var card = modal ? modal.querySelector('.rs-card') : null;
+  var closeBtn = $('#rsClose');
+  var cancelBtn = $('#rsCancel');
+  var rechargeBtn = $('#rechargeBtn');
+  var options = $all('.rs-option');
+  var lastFocus = null;
+
+  function openRechargeSystemModal(){
+    lastFocus = document.activeElement;
+    modal.classList.add('show'); 
+    modal.setAttribute('aria-hidden','false');
+    lockScroll(true);
+    (card||modal).focus({preventScroll:true});
+  }
+  
+  function closeRechargeSystemModal(){
+    modal.classList.remove('show'); 
+    modal.setAttribute('aria-hidden','true');
+    lockScroll(false);
+    if(lastFocus && typeof lastFocus.focus==='function'){ try{ lastFocus.focus(); }catch(e){} }
+  }
+
+  // 打开弹窗
+  if(rechargeBtn){
+    rechargeBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      openRechargeSystemModal();
+    });
+  }
+
+  // 关闭弹窗
+  if(closeBtn) closeBtn.addEventListener('click', closeRechargeSystemModal);
+  if(cancelBtn) cancelBtn.addEventListener('click', closeRechargeSystemModal);
+  if(modal) modal.addEventListener('click', function(e){ if(e.target===modal) closeRechargeSystemModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.classList.contains('show')) closeRechargeSystemModal(); });
+
+  // 点击选项跳转到对应网站
+  options.forEach(function(option){
+    option.addEventListener('click', function(){
+      var url = option.getAttribute('data-url');
+      if(url){
+        window.open(url, '_blank', 'noopener');
+        closeRechargeSystemModal();
+      }
+    });
+  });
+
+  // 导出函数
+  window.openRechargeSystemModal = openRechargeSystemModal;
 })();
 </script></body>
 </html>
