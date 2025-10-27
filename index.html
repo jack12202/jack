@@ -946,18 +946,19 @@ a#openWhyTop:hover{ color:#fff; }
 .rs-title{margin:.2rem 0 1rem;font-size:1.1rem;font-weight:800;text-align:center;}
 .rs-close{position:absolute;transform:translate(470px,-10px);background:#111827;color:#fff;border:none;padding:.35rem .55rem;border-radius:8px;cursor:pointer;}
 .rs-body p{margin:.4rem 0;text-align:center;}
-.rs-options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;}
-.rs-option{padding:16px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:12px;cursor:pointer;transition:all .2s ease;text-align:center;}
+    .rs-options{display:flex;flex-direction:column;gap:16px;margin:20px 0;max-width:400px;margin-left:auto;margin-right:auto;}
+    .rs-option{padding:20px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:14px;cursor:pointer;transition:all .2s ease;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.1);}
 .rs-option:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);transform:translateY(-2px);}
-.rs-option-title{font-weight:700;margin-bottom:6px;color:#fff;}
-.rs-option-desc{font-size:.85rem;opacity:.8;margin-bottom:8px;}
-.rs-option-url{font-size:.8rem;color:var(--brand-500);word-break:break-all;}
+    .rs-option-title{font-weight:800;margin-bottom:8px;color:#fff;font-size:1.05rem;}
+    .rs-option-desc{font-size:.9rem;opacity:.85;margin-bottom:10px;color:#d1f4ff;}
+    .rs-option-url{font-size:.85rem;color:var(--brand-500);word-break:break-all;font-weight:600;}
 .rs-actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:.9rem 0 .4rem;justify-content:center;}
 .rs-btn{all:unset;cursor:pointer;padding:.55rem .9rem;border-radius:10px;font-weight:800;}
 .rs-btn-primary{background:linear-gradient(180deg,var(--brand-600),var(--brand-500));color:#fff;}
 .rs-btn-ghost{border:1px solid rgba(255,255,255,.65);color:#fff;}
 @media (max-width:640px){ 
-  .rs-options{ grid-template-columns:1fr; gap:8px; }
+  .rs-options{ max-width:100%; gap:12px; }
+  .rs-option{ padding:16px 12px; }
 }
 @media (max-width:480px){ 
   .rs-close{ transform:translate(260px,-10px);} 
@@ -1402,7 +1403,6 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
       <ul style="margin: 8px 0; padding-left: 20px; line-height: 1.6;">
         <li>购买了自动充值1卡密 → 进入网站1激活</li>
         <li>购买了自动充值2卡密 → 进入网站2激活</li>
-        <li>购买了自动充值3卡密 → 进入网站3激活</li>
       </ul>
       
       <div class="rs-options">
@@ -1415,11 +1415,6 @@ body.modal-open .sticky-note { opacity:.6; pointer-events:none; }
           <div class="rs-option-title">自动充值2</div>
           <div class="rs-option-desc">点击进入激活网站</div>
           <div class="rs-option-url">www.987ai.vip</div>
-        </div>
-        <div class="rs-option" data-url="https://gpt.ade.mom/">
-          <div class="rs-option-title">自动充值3</div>
-          <div class="rs-option-desc">点击进入激活网站</div>
-          <div class="rs-option-url">gpt.ade.mom</div>
         </div>
       </div>
       
